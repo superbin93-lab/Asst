@@ -13,7 +13,7 @@ import { LOCALE_COOKIE } from "@/i18n/config";
 const loginSchema = z.object({
   email: z.string().trim().toLowerCase().email(),
   password: z.string().min(1),
-  redirectTo: z.string().optional(),
+  redirectTo: z.string().nullish(),
 });
 
 export type LoginState = { error?: "invalidCredentials" | "accountDisabled" | "invalidInput" };
