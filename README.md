@@ -80,6 +80,63 @@ docker compose logs -f app
 docker compose ps
 ```
 
+Nếu VPS bật `ufw`, mở cổng cho `APP_PORT` (mặc định `3000`):
+
+```bash
+sudo ufw allow 3000/tcp
+```
+
+Sự cố thường gặp:
+
+| Triệu chứng | Nguyên nhân / cách xử lý |
+|---|---|
+| `docker compose up` báo thiếu biến môi trường | Chưa `cp .env.docker.example .env` hoặc chưa điền `POSTGRES_PASSWORD` / `AUTH_SECRET` / `SEED_ADMIN_PASSWORD` |
+| Container `app` cứ restart liên tục | `docker compose logs app` xem lỗi migration/kết nối DB; thường do `db` chưa healthy kịp hoặc `.env` sai |
+| Vào được `http://<IP>:3000` từ VPS nhưng không vào được từ máy khác | Firewall VPS (`ufw`) hoặc security group của nhà cung cấp cloud chưa mở cổng `3000` |
+| Muốn đổi cổng ứng dụng | Sửa `APP_PORT` trong `.env` rồi `docker compose up -d` lại |
+
+### Không dùng Docker (cài trực tiếp lên VPS)
+
+Nếu VPS không hỗ trợ Docker hoặc bạn muốn quản lý Node/PostgreSQL trực tiếp:
+
+```bash
+# Node.js 24.x + PostgreSQL 17 + git + pm2
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+sudo apt-get install -y nodejs postgresql postgresql-contrib git
+sudo npm install -g pm2
+
+git clone https://github.com/superbin93-lab/Asst.git
+cd Asst
+npm install
+
+sudo -u postgres psql -c "CREATE USER itam WITH PASSWORD 'doi-mat-khau-manh';"
+sudo -u postgres psql -c "CREATE DATABASE itam OWNER itam;"
+
+cp .env.example .env
+nano .env        # DATABASE_URL trỏ vào postgres vừa tạo, AUTH_SECRET, APP_URL=http://<IP_VPS>:3000
+
+npx prisma generate
+npm run db:deploy
+SEED_DEMO=false SEED_ADMIN_PASSWORD="mat-khau-admin-manh" npm run db:seed
+
+npm run build
+pm2 start "npm run start" --name asst
+pm2 save && pm2 startup   # chạy dòng lệnh pm2 in ra để tự khởi động cùng VPS
+
+sudo ufw allow 3000/tcp
+```
+
+Cập nhật bản mới:
+
+```bash
+cd ~/Asst
+git pull
+npm install
+npm run db:deploy
+npm run build
+pm2 restart asst
+```
+
 ---
 
 ## Phân hệ
