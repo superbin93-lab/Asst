@@ -43,6 +43,45 @@ dữ liệu mẫu.
 
 ---
 
+## Triển khai lên VPS bằng Docker
+
+Cách nhanh nhất để chạy trên một VPS trống: cài Docker một lần, sau đó mỗi lần
+deploy chỉ cần `git pull` + `docker compose up`.
+
+```bash
+# Trên VPS (Ubuntu/Debian), cài Docker một lần:
+curl -fsSL https://get.docker.com | sudo sh
+sudo usermod -aG docker $USER && newgrp docker
+
+git clone https://github.com/superbin93-lab/Asst.git
+cd Asst
+cp .env.docker.example .env
+nano .env        # điền POSTGRES_PASSWORD, AUTH_SECRET, SEED_ADMIN_PASSWORD, APP_URL
+
+docker compose up -d --build
+```
+
+Container `app` tự chạy `prisma migrate deploy` và seed tài khoản admin (dùng
+`SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` trong `.env`) mỗi lần khởi động —
+việc này an toàn để lặp lại vì chỉ upsert, không xoá dữ liệu. Ứng dụng nghe ở
+cổng `APP_PORT` (mặc định `3000`).
+
+Cập nhật lên bản mới:
+
+```bash
+git pull
+docker compose up -d --build
+```
+
+Xem log / trạng thái:
+
+```bash
+docker compose logs -f app
+docker compose ps
+```
+
+---
+
 ## Phân hệ
 
 ### Tài sản IT

@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+.devdb
+.shots
+.env
+.env.local
+*.log
+coverage
