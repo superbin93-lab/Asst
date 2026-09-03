@@ -1,0 +1,17 @@
+{
+  "required": "Trường này là bắt buộc",
+  "invalidEmail": "Email không hợp lệ",
+  "invalidPhone": "Số điện thoại không hợp lệ",
+  "invalidDate": "Ngày không hợp lệ",
+  "invalidNumber": "Giá trị phải là số",
+  "invalidUrl": "Đường dẫn không hợp lệ",
+  "minLength": "Tối thiểu {min} ký tự",
+  "maxLength": "Tối đa {max} ký tự",
+  "min": "Giá trị nhỏ nhất là {min}",
+  "max": "Giá trị lớn nhất là {max}",
+  "positive": "Giá trị phải lớn hơn 0",
+  "codeFormat": "Mã chỉ gồm chữ in hoa, số, dấu gạch ngang và gạch dưới",
+  "duplicate": "Giá trị này đã tồn tại",
+  "notFound": "Không tìm thấy bản ghi",
+  "cannotDeleteInUse": "Không thể xoá vì bản ghi đang được sử dụng"
+}

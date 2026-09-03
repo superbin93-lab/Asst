@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Design tokens. Light values live on :root; the .dark class (set by the theme
+   switcher on <html>) overrides them. Everything in the UI references these,
+   never a raw palette colour.
+--------------------------------------------------------------------------- */
+:root {
+  --background: oklch(0.985 0.002 250);
+  --surface: oklch(1 0 0);
+  --surface-muted: oklch(0.968 0.004 250);
+  --foreground: oklch(0.21 0.02 260);
+  --muted-foreground: oklch(0.52 0.02 260);
+  --border: oklch(0.9 0.006 260);
+  --border-strong: oklch(0.83 0.01 260);
+  --input: oklch(1 0 0);
+  --ring: oklch(0.55 0.16 258);
+
+  --primary: oklch(0.52 0.17 258);
+  --primary-hover: oklch(0.46 0.17 258);
+  --primary-foreground: oklch(0.99 0 0);
+  --primary-subtle: oklch(0.95 0.03 258);
+
+  --success: oklch(0.6 0.13 155);
+  --success-subtle: oklch(0.95 0.04 155);
+  --warning: oklch(0.72 0.14 75);
+  --warning-subtle: oklch(0.96 0.05 85);
+  --danger: oklch(0.56 0.19 27);
+  --danger-subtle: oklch(0.95 0.04 27);
+  --info: oklch(0.6 0.12 230);
+  --info-subtle: oklch(0.95 0.03 230);
+  --neutral-subtle: oklch(0.95 0.004 260);
+
+  --radius: 0.625rem;
+
+  /* Data-viz ordinal ramp: one blue hue, low -> high magnitude reads
+     light -> dark on the light surface. Validated with the dataviz
+     validator (--ordinal) against surface #ffffff. */
+  --viz-1: #86b6ef;
+  --viz-2: #5598e7;
+  --viz-3: #2a78d6;
+  --viz-4: #1c5cab;
+  --viz-5: #104281;
+  --viz-grid: oklch(0.93 0.004 260);
+  --viz-axis: oklch(0.86 0.008 260);
+}
+
+.dark {
+  --background: oklch(0.17 0.012 265);
+  --surface: oklch(0.213 0.014 265);
+  --surface-muted: oklch(0.253 0.015 265);
+  --foreground: oklch(0.95 0.005 260);
+  --muted-foreground: oklch(0.68 0.015 260);
+  --border: oklch(0.31 0.016 265);
+  --border-strong: oklch(0.4 0.018 265);
+  --input: oklch(0.253 0.015 265);
+  --ring: oklch(0.65 0.15 258);
+
+  --primary: oklch(0.65 0.15 258);
+  --primary-hover: oklch(0.72 0.14 258);
+  --primary-foreground: oklch(0.16 0.02 260);
+  --primary-subtle: oklch(0.3 0.06 258);
+
+  --success: oklch(0.72 0.14 155);
+  --success-subtle: oklch(0.29 0.05 155);
+  --warning: oklch(0.79 0.14 78);
+  --warning-subtle: oklch(0.32 0.06 78);
+  --danger: oklch(0.68 0.17 25);
+  --danger-subtle: oklch(0.31 0.07 25);
+  --info: oklch(0.7 0.12 230);
+  --info-subtle: oklch(0.3 0.05 230);
+  --neutral-subtle: oklch(0.28 0.012 265);
+
+  /* On the dark surface the ramp runs the other way: low magnitude sits
+     nearest the surface. Validated against surface #161920. */
+  --viz-1: #1c5cab;
+  --viz-2: #2a78d6;
+  --viz-3: #5598e7;
+  --viz-4: #86b6ef;
+  --viz-5: #b7d3f6;
+  --viz-grid: oklch(0.28 0.014 265);
+  --viz-axis: oklch(0.36 0.016 265);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-subtle: var(--primary-subtle);
+
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-danger: var(--danger);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+  --color-neutral-subtle: var(--neutral-subtle);
+
+  --color-viz-1: var(--viz-1);
+  --color-viz-2: var(--viz-2);
+  --color-viz-3: var(--viz-3);
+  --color-viz-4: var(--viz-4);
+  --color-viz-5: var(--viz-5);
+  --color-viz-grid: var(--viz-grid);
+  --color-viz-axis: var(--viz-axis);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-stack), ui-monospace, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Keyboard focus stays visible; pointer focus does not draw a ring. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background-color: var(--primary-subtle);
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+  /* Numeric columns line up when digits share a width. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}

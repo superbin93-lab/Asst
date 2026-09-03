@@ -1,0 +1,81 @@
+{
+  "categories": {
+    "title": "Nhóm tài sản",
+    "new": "Thêm nhóm",
+    "parent": "Nhóm cha",
+    "defaultUsefulLifeMonths": "Thời gian khấu hao mặc định (tháng)",
+    "defaultWarrantyMonths": "Bảo hành mặc định (tháng)",
+    "assetCount": "Số tài sản",
+    "inUseWarning": "Không thể xoá nhóm đang có tài sản."
+  },
+  "locations": {
+    "title": "Vị trí",
+    "new": "Thêm vị trí",
+    "parent": "Thuộc vị trí",
+    "type": "Loại vị trí",
+    "types": {
+      "OFFICE": "Văn phòng",
+      "FLOOR": "Tầng",
+      "ROOM": "Phòng",
+      "WAREHOUSE": "Kho",
+      "DATACENTER": "Phòng máy chủ",
+      "REMOTE": "Làm việc từ xa"
+    },
+    "assetCount": "Số tài sản"
+  },
+  "vendors": {
+    "title": "Nhà cung cấp",
+    "new": "Thêm nhà cung cấp",
+    "contactName": "Người liên hệ",
+    "taxCode": "Mã số thuế",
+    "website": "Website",
+    "isManufacturer": "Là hãng sản xuất",
+    "isSupplier": "Là nhà cung cấp",
+    "assetCount": "Số tài sản"
+  },
+  "licenses": {
+    "title": "Bản quyền phần mềm",
+    "new": "Thêm bản quyền",
+    "licenseKey": "Khoá bản quyền",
+    "type": "Loại bản quyền",
+    "seatsTotal": "Tổng số license",
+    "seatsUsed": "Đã cấp",
+    "seatsAvailable": "Còn trống",
+    "purchaseDate": "Ngày mua",
+    "expiryDate": "Ngày hết hạn",
+    "cost": "Chi phí",
+    "types": {
+      "PERPETUAL": "Vĩnh viễn",
+      "SUBSCRIPTION": "Thuê bao",
+      "OEM": "OEM",
+      "VOLUME": "Volume",
+      "OPEN_SOURCE": "Mã nguồn mở",
+      "TRIAL": "Dùng thử"
+    },
+    "assignSeat": "Cấp license",
+    "revokeSeat": "Thu hồi license",
+    "assignedTo": "Cấp cho",
+    "noSeatsLeft": "Đã dùng hết số license khả dụng.",
+    "expiringSoon": "Hết hạn trong {days} ngày",
+    "expired": "Đã hết hạn",
+    "showKey": "Hiện khoá",
+    "hideKey": "Ẩn khoá"
+  },
+  "consumables": {
+    "title": "Vật tư tiêu hao",
+    "new": "Thêm vật tư",
+    "unit": "Đơn vị tính",
+    "quantity": "Tồn kho",
+    "minQuantity": "Định mức tối thiểu",
+    "unitCost": "Đơn giá",
+    "stockIn": "Nhập kho",
+    "stockOut": "Xuất kho",
+    "adjust": "Điều chỉnh tồn",
+    "issuedTo": "Cấp cho",
+    "belowMinimum": "Dưới định mức",
+    "transactions": "Lịch sử xuất nhập",
+    "txnTypes": { "IN": "Nhập", "OUT": "Xuất", "ADJUST": "Điều chỉnh" },
+    "balanceAfter": "Tồn sau giao dịch",
+    "insufficientStock": "Tồn kho không đủ: còn {available}, cần xuất {requested}."
+  }
+}

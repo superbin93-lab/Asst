@@ -1,0 +1,81 @@
+{
+  "categories": {
+    "title": "Asset categories",
+    "new": "New category",
+    "parent": "Parent category",
+    "defaultUsefulLifeMonths": "Default useful life (months)",
+    "defaultWarrantyMonths": "Default warranty (months)",
+    "assetCount": "Assets",
+    "inUseWarning": "A category that still holds assets cannot be deleted."
+  },
+  "locations": {
+    "title": "Locations",
+    "new": "New location",
+    "parent": "Inside",
+    "type": "Location type",
+    "types": {
+      "OFFICE": "Office",
+      "FLOOR": "Floor",
+      "ROOM": "Room",
+      "WAREHOUSE": "Warehouse",
+      "DATACENTER": "Data centre",
+      "REMOTE": "Remote"
+    },
+    "assetCount": "Assets"
+  },
+  "vendors": {
+    "title": "Vendors",
+    "new": "New vendor",
+    "contactName": "Contact person",
+    "taxCode": "Tax code",
+    "website": "Website",
+    "isManufacturer": "Is a manufacturer",
+    "isSupplier": "Is a supplier",
+    "assetCount": "Assets"
+  },
+  "licenses": {
+    "title": "Software licences",
+    "new": "New licence",
+    "licenseKey": "Licence key",
+    "type": "Licence type",
+    "seatsTotal": "Total seats",
+    "seatsUsed": "Assigned",
+    "seatsAvailable": "Available",
+    "purchaseDate": "Purchased",
+    "expiryDate": "Expires",
+    "cost": "Cost",
+    "types": {
+      "PERPETUAL": "Perpetual",
+      "SUBSCRIPTION": "Subscription",
+      "OEM": "OEM",
+      "VOLUME": "Volume",
+      "OPEN_SOURCE": "Open source",
+      "TRIAL": "Trial"
+    },
+    "assignSeat": "Assign seat",
+    "revokeSeat": "Revoke seat",
+    "assignedTo": "Assigned to",
+    "noSeatsLeft": "No seats left on this licence.",
+    "expiringSoon": "Expires in {days} days",
+    "expired": "Expired",
+    "showKey": "Show key",
+    "hideKey": "Hide key"
+  },
+  "consumables": {
+    "title": "Consumables",
+    "new": "New consumable",
+    "unit": "Unit",
+    "quantity": "On hand",
+    "minQuantity": "Minimum level",
+    "unitCost": "Unit cost",
+    "stockIn": "Receive stock",
+    "stockOut": "Issue stock",
+    "adjust": "Adjust stock",
+    "issuedTo": "Issued to",
+    "belowMinimum": "Below minimum",
+    "transactions": "Stock movements",
+    "txnTypes": { "IN": "Receipt", "OUT": "Issue", "ADJUST": "Adjustment" },
+    "balanceAfter": "Balance after",
+    "insufficientStock": "Not enough stock: {available} on hand, {requested} requested."
+  }
+}

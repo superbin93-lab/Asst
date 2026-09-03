@@ -1,0 +1,135 @@
+{
+  "title": "IT assets",
+  "subtitle": "Every device, machine and piece of IT infrastructure",
+  "singular": "asset",
+  "new": "New asset",
+  "edit": "Edit asset",
+  "detail": "Asset details",
+  "fields": {
+    "assetTag": "Asset tag",
+    "name": "Asset name",
+    "category": "Category",
+    "status": "Status",
+    "condition": "Condition",
+    "serialNumber": "Serial number",
+    "model": "Model",
+    "manufacturer": "Manufacturer",
+    "supplier": "Supplier",
+    "purchaseDate": "Purchase date",
+    "purchaseCost": "Purchase cost",
+    "currency": "Currency",
+    "invoiceNo": "Invoice no.",
+    "poNumber": "PO number",
+    "warrantyMonths": "Warranty (months)",
+    "warrantyEndAt": "Warranty ends",
+    "usefulLifeMonths": "Useful life (months)",
+    "depreciationMethod": "Depreciation method",
+    "salvageValue": "Salvage value",
+    "location": "Location",
+    "department": "Department",
+    "holder": "Current holder",
+    "specs": "Specifications",
+    "notes": "Notes",
+    "disposedAt": "Disposal date",
+    "disposalNote": "Disposal reason",
+    "bookValue": "Book value",
+    "age": "Age"
+  },
+  "status": {
+    "IN_STOCK": "In stock",
+    "ASSIGNED": "In use",
+    "IN_REPAIR": "Under repair",
+    "RESERVED": "Reserved",
+    "RETIRED": "Retired",
+    "LOST": "Lost",
+    "DISPOSED": "Disposed"
+  },
+  "condition": {
+    "NEW": "New",
+    "GOOD": "Good",
+    "FAIR": "Fair",
+    "POOR": "Poor",
+    "BROKEN": "Broken"
+  },
+  "depreciation": {
+    "NONE": "No depreciation",
+    "STRAIGHT_LINE": "Straight line",
+    "DECLINING_BALANCE": "Declining balance"
+  },
+  "warranty": {
+    "active": "Under warranty",
+    "expiring": "Expires in {days} days",
+    "expired": "Out of warranty",
+    "unknown": "Not recorded"
+  },
+  "assignment": {
+    "title": "Assignments",
+    "assignTitle": "Assign asset",
+    "returnTitle": "Check asset in",
+    "employee": "Assign to",
+    "assignedAt": "Assigned on",
+    "expectedReturnAt": "Expected return",
+    "returnedAt": "Returned on",
+    "conditionOut": "Condition when issued",
+    "conditionIn": "Condition when returned",
+    "issuedBy": "Issued by",
+    "receivedBy": "Received by",
+    "status": {
+      "ACTIVE": "In possession",
+      "RETURNED": "Returned",
+      "OVERDUE": "Overdue"
+    },
+    "handoverNote": "Handover note",
+    "assignSuccess": "Asset assigned to {name}",
+    "returnSuccess": "Asset checked in",
+    "notAssignable": "Only assets that are in stock or reserved can be assigned."
+  },
+  "maintenance": {
+    "title": "Maintenance & repairs",
+    "new": "New maintenance record",
+    "type": "Type",
+    "vendor": "Performed by vendor",
+    "cost": "Cost",
+    "scheduledAt": "Scheduled for",
+    "startedAt": "Started",
+    "completedAt": "Completed",
+    "nextDueAt": "Next due",
+    "performedBy": "Technician",
+    "types": {
+      "PREVENTIVE": "Preventive",
+      "REPAIR": "Repair",
+      "UPGRADE": "Upgrade",
+      "INSPECTION": "Inspection",
+      "CALIBRATION": "Calibration"
+    },
+    "statuses": {
+      "SCHEDULED": "Scheduled",
+      "IN_PROGRESS": "In progress",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "timeline": {
+    "title": "Asset history",
+    "created": "Asset created",
+    "updated": "Details updated",
+    "assigned": "Assigned to {name}",
+    "returned": "Returned by {name}",
+    "statusChanged": "Status changed: {from} to {to}",
+    "maintenanceOpened": "Maintenance opened: {title}",
+    "maintenanceClosed": "Maintenance completed: {title}",
+    "disposed": "Asset disposed"
+  },
+  "filters": {
+    "keyword": "Search tag, name, serial...",
+    "category": "Category",
+    "status": "Status",
+    "location": "Location",
+    "holder": "Holder",
+    "warrantyExpiring": "Warranty expiring"
+  },
+  "validation": {
+    "assetTagTaken": "That asset tag is already taken.",
+    "serialTaken": "That serial number belongs to another asset."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "title": "Báo cáo",
+  "subtitle": "Số liệu tổng hợp theo phân hệ",
+  "period": "Kỳ báo cáo",
+  "thisMonth": "Tháng này",
+  "thisQuarter": "Quý này",
+  "thisYear": "Năm nay",
+  "custom": "Tuỳ chọn",
+  "assets": {
+    "title": "Báo cáo tài sản",
+    "byCategory": "Theo nhóm tài sản",
+    "byStatus": "Theo trạng thái",
+    "byDepartment": "Theo phòng ban",
+    "byLocation": "Theo vị trí",
+    "totalValue": "Tổng nguyên giá",
+    "bookValue": "Giá trị còn lại",
+    "acquiredThisPeriod": "Mua trong kỳ",
+    "disposedThisPeriod": "Thanh lý trong kỳ",
+    "maintenanceCost": "Chi phí bảo trì"
+  },
+  "tickets": {
+    "title": "Báo cáo ticket",
+    "volume": "Số lượng ticket",
+    "byCategory": "Theo nhóm yêu cầu",
+    "byPriority": "Theo mức ưu tiên",
+    "byAssignee": "Theo người xử lý",
+    "avgResponseTime": "Thời gian phản hồi trung bình",
+    "avgResolutionTime": "Thời gian xử lý trung bình",
+    "slaCompliance": "Tỷ lệ đạt SLA",
+    "satisfaction": "Điểm hài lòng trung bình"
+  },
+  "leave": {
+    "title": "Báo cáo nghỉ phép",
+    "byType": "Theo loại phép",
+    "byDepartment": "Theo phòng ban",
+    "daysTaken": "Số ngày đã nghỉ",
+    "remainingBalance": "Quỹ phép còn lại",
+    "topUsers": "Nhân viên nghỉ nhiều nhất"
+  },
+  "hr": {
+    "title": "Báo cáo nhân sự",
+    "headcountTrend": "Biến động nhân sự",
+    "byDepartment": "Theo phòng ban",
+    "byEmploymentType": "Theo hình thức làm việc",
+    "newHires": "Tuyển mới trong kỳ",
+    "terminations": "Nghỉ việc trong kỳ",
+    "turnoverRate": "Tỷ lệ nghỉ việc"
+  }
+}

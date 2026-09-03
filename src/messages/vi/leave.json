@@ -1,0 +1,120 @@
+{
+  "title": "Nghỉ phép",
+  "subtitle": "Đăng ký, theo dõi và duyệt ngày nghỉ",
+  "myLeave": "Phép của tôi",
+  "newRequest": "Tạo đơn nghỉ phép",
+  "editRequest": "Sửa đơn nghỉ phép",
+  "detail": "Chi tiết đơn nghỉ phép",
+  "approvals": "Đơn chờ tôi duyệt",
+  "fields": {
+    "code": "Mã đơn",
+    "employee": "Nhân viên",
+    "leaveType": "Loại phép",
+    "startDate": "Từ ngày",
+    "endDate": "Đến ngày",
+    "startDayPart": "Buổi bắt đầu",
+    "endDayPart": "Buổi kết thúc",
+    "totalDays": "Số ngày nghỉ",
+    "reason": "Lý do nghỉ",
+    "contactPhone": "SĐT liên hệ khi nghỉ",
+    "handoverTo": "Bàn giao cho",
+    "handoverNote": "Nội dung bàn giao",
+    "submittedAt": "Ngày gửi",
+    "decidedAt": "Ngày duyệt",
+    "status": "Trạng thái"
+  },
+  "dayPart": {
+    "FULL": "Cả ngày",
+    "MORNING": "Buổi sáng",
+    "AFTERNOON": "Buổi chiều"
+  },
+  "status": {
+    "DRAFT": "Nháp",
+    "PENDING": "Chờ duyệt",
+    "APPROVED": "Đã duyệt",
+    "REJECTED": "Từ chối",
+    "CANCELLED": "Đã huỷ"
+  },
+  "approval": {
+    "title": "Luồng duyệt",
+    "step": "Bước {step}",
+    "approver": "Người duyệt",
+    "comment": "Ý kiến",
+    "actedAt": "Thời điểm",
+    "status": {
+      "PENDING": "Chờ duyệt",
+      "APPROVED": "Đã duyệt",
+      "REJECTED": "Từ chối",
+      "SKIPPED": "Bỏ qua"
+    },
+    "approveConfirm": "Duyệt đơn nghỉ phép của {name}?",
+    "rejectConfirm": "Từ chối đơn nghỉ phép của {name}?",
+    "commentPlaceholder": "Ý kiến của bạn (không bắt buộc khi duyệt)",
+    "rejectReasonRequired": "Vui lòng nhập lý do từ chối.",
+    "approved": "Đã duyệt đơn nghỉ phép.",
+    "rejected": "Đã từ chối đơn nghỉ phép.",
+    "notYourTurn": "Chưa đến lượt bạn duyệt đơn này.",
+    "noPending": "Không có đơn nào chờ bạn duyệt."
+  },
+  "balance": {
+    "title": "Quỹ phép",
+    "year": "Năm",
+    "entitled": "Được hưởng",
+    "carriedOver": "Chuyển từ năm trước",
+    "adjustment": "Điều chỉnh",
+    "used": "Đã dùng",
+    "pending": "Đang chờ duyệt",
+    "available": "Còn lại",
+    "totalAvailable": "Tổng khả dụng",
+    "days": "{count} ngày",
+    "recalculate": "Tính lại quỹ phép",
+    "generateForYear": "Khởi tạo quỹ phép năm {year}",
+    "generated": "Đã khởi tạo quỹ phép cho {count} nhân viên.",
+    "adjustTitle": "Điều chỉnh quỹ phép",
+    "adjustHint": "Nhập số dương để cộng thêm, số âm để trừ bớt."
+  },
+  "types": {
+    "title": "Loại phép",
+    "new": "Thêm loại phép",
+    "defaultDaysPerYear": "Số ngày mặc định/năm",
+    "isPaid": "Có hưởng lương",
+    "allowHalfDay": "Cho phép nghỉ nửa ngày",
+    "requiresAttachment": "Bắt buộc đính kèm",
+    "carryOverLimitDays": "Số ngày được chuyển sang năm sau",
+    "carryOverExpiry": "Hạn dùng ngày chuyển tiếp (MM-DD)",
+    "maxConsecutiveDays": "Số ngày nghỉ liên tục tối đa",
+    "minNoticeDays": "Báo trước tối thiểu (ngày)",
+    "deductsBalance": "Trừ vào quỹ phép",
+    "color": "Màu hiển thị"
+  },
+  "holidays": {
+    "title": "Ngày lễ",
+    "new": "Thêm ngày lễ",
+    "date": "Ngày",
+    "name": "Tên ngày lễ",
+    "isRecurring": "Lặp lại hằng năm",
+    "isHalfDay": "Nghỉ nửa ngày",
+    "hint": "Ngày lễ và ngày cuối tuần không bị tính vào số ngày nghỉ phép."
+  },
+  "calendar": {
+    "title": "Lịch nghỉ phép",
+    "teamView": "Lịch nghỉ của bộ phận",
+    "noLeave": "Không có ai nghỉ trong khoảng này."
+  },
+  "validation": {
+    "endBeforeStart": "Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.",
+    "noWorkingDays": "Khoảng thời gian đã chọn không có ngày làm việc nào.",
+    "insufficientBalance": "Quỹ phép không đủ: còn {available} ngày, đơn cần {requested} ngày.",
+    "overlapping": "Bạn đã có đơn nghỉ phép trùng khoảng thời gian này ({code}).",
+    "halfDayNotAllowed": "Loại phép này không cho phép nghỉ nửa ngày.",
+    "maxConsecutiveExceeded": "Loại phép này chỉ cho nghỉ tối đa {max} ngày liên tục.",
+    "minNoticeNotMet": "Loại phép này cần báo trước ít nhất {days} ngày.",
+    "attachmentRequired": "Loại phép này bắt buộc đính kèm tài liệu.",
+    "noApprover": "Chưa cấu hình người duyệt cho nhân viên này. Liên hệ HR."
+  },
+  "toast": {
+    "submitted": "Đã gửi đơn nghỉ phép, chờ duyệt.",
+    "savedDraft": "Đã lưu nháp đơn nghỉ phép.",
+    "cancelled": "Đã huỷ đơn nghỉ phép."
+  }
+}

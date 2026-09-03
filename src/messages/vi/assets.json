@@ -1,0 +1,135 @@
+{
+  "title": "Tài sản IT",
+  "subtitle": "Toàn bộ thiết bị, máy móc và hạ tầng IT của công ty",
+  "singular": "tài sản",
+  "new": "Thêm tài sản",
+  "edit": "Sửa tài sản",
+  "detail": "Chi tiết tài sản",
+  "fields": {
+    "assetTag": "Mã tài sản",
+    "name": "Tên tài sản",
+    "category": "Nhóm tài sản",
+    "status": "Trạng thái",
+    "condition": "Tình trạng",
+    "serialNumber": "Số serial",
+    "model": "Model",
+    "manufacturer": "Hãng sản xuất",
+    "supplier": "Nhà cung cấp",
+    "purchaseDate": "Ngày mua",
+    "purchaseCost": "Giá mua",
+    "currency": "Tiền tệ",
+    "invoiceNo": "Số hoá đơn",
+    "poNumber": "Số PO",
+    "warrantyMonths": "Bảo hành (tháng)",
+    "warrantyEndAt": "Hết bảo hành",
+    "usefulLifeMonths": "Thời gian khấu hao (tháng)",
+    "depreciationMethod": "Phương pháp khấu hao",
+    "salvageValue": "Giá trị thu hồi",
+    "location": "Vị trí",
+    "department": "Phòng ban",
+    "holder": "Người đang giữ",
+    "specs": "Thông số kỹ thuật",
+    "notes": "Ghi chú",
+    "disposedAt": "Ngày thanh lý",
+    "disposalNote": "Lý do thanh lý",
+    "bookValue": "Giá trị còn lại",
+    "age": "Tuổi thiết bị"
+  },
+  "status": {
+    "IN_STOCK": "Trong kho",
+    "ASSIGNED": "Đang sử dụng",
+    "IN_REPAIR": "Đang sửa chữa",
+    "RESERVED": "Đã giữ chỗ",
+    "RETIRED": "Ngừng sử dụng",
+    "LOST": "Thất lạc",
+    "DISPOSED": "Đã thanh lý"
+  },
+  "condition": {
+    "NEW": "Mới",
+    "GOOD": "Tốt",
+    "FAIR": "Trung bình",
+    "POOR": "Kém",
+    "BROKEN": "Hỏng"
+  },
+  "depreciation": {
+    "NONE": "Không khấu hao",
+    "STRAIGHT_LINE": "Đường thẳng",
+    "DECLINING_BALANCE": "Số dư giảm dần"
+  },
+  "warranty": {
+    "active": "Còn bảo hành",
+    "expiring": "Sắp hết ({days} ngày)",
+    "expired": "Hết bảo hành",
+    "unknown": "Chưa có thông tin"
+  },
+  "assignment": {
+    "title": "Cấp phát",
+    "assignTitle": "Cấp phát tài sản",
+    "returnTitle": "Thu hồi tài sản",
+    "employee": "Nhân viên nhận",
+    "assignedAt": "Ngày cấp",
+    "expectedReturnAt": "Hạn trả dự kiến",
+    "returnedAt": "Ngày thu hồi",
+    "conditionOut": "Tình trạng khi cấp",
+    "conditionIn": "Tình trạng khi thu hồi",
+    "issuedBy": "Người cấp",
+    "receivedBy": "Người nhận lại",
+    "status": {
+      "ACTIVE": "Đang giữ",
+      "RETURNED": "Đã trả",
+      "OVERDUE": "Quá hạn trả"
+    },
+    "handoverNote": "Biên bản bàn giao",
+    "assignSuccess": "Đã cấp phát tài sản cho {name}",
+    "returnSuccess": "Đã thu hồi tài sản",
+    "notAssignable": "Chỉ có thể cấp phát tài sản đang ở trạng thái Trong kho hoặc Đã giữ chỗ."
+  },
+  "maintenance": {
+    "title": "Bảo trì & sửa chữa",
+    "new": "Tạo phiếu bảo trì",
+    "type": "Loại",
+    "vendor": "Đơn vị thực hiện",
+    "cost": "Chi phí",
+    "scheduledAt": "Lịch hẹn",
+    "startedAt": "Bắt đầu",
+    "completedAt": "Hoàn tất",
+    "nextDueAt": "Lần bảo trì kế tiếp",
+    "performedBy": "Người thực hiện",
+    "types": {
+      "PREVENTIVE": "Bảo trì định kỳ",
+      "REPAIR": "Sửa chữa",
+      "UPGRADE": "Nâng cấp",
+      "INSPECTION": "Kiểm tra",
+      "CALIBRATION": "Hiệu chuẩn"
+    },
+    "statuses": {
+      "SCHEDULED": "Đã lên lịch",
+      "IN_PROGRESS": "Đang thực hiện",
+      "COMPLETED": "Hoàn tất",
+      "CANCELLED": "Đã huỷ"
+    }
+  },
+  "timeline": {
+    "title": "Lịch sử tài sản",
+    "created": "Tạo tài sản",
+    "updated": "Cập nhật thông tin",
+    "assigned": "Cấp phát cho {name}",
+    "returned": "Thu hồi từ {name}",
+    "statusChanged": "Đổi trạng thái: {from} → {to}",
+    "maintenanceOpened": "Mở phiếu bảo trì: {title}",
+    "maintenanceClosed": "Hoàn tất bảo trì: {title}",
+    "disposed": "Thanh lý tài sản"
+  },
+  "filters": {
+    "keyword": "Tìm theo mã, tên, serial...",
+    "category": "Nhóm",
+    "status": "Trạng thái",
+    "location": "Vị trí",
+    "holder": "Người giữ",
+    "warrantyExpiring": "Sắp hết bảo hành"
+  },
+  "validation": {
+    "assetTagTaken": "Mã tài sản đã tồn tại.",
+    "serialTaken": "Số serial này đã được dùng cho tài sản khác."
+  }
+}

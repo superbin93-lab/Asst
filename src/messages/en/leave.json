@@ -1,0 +1,120 @@
+{
+  "title": "Leave",
+  "subtitle": "Request, track and approve time off",
+  "myLeave": "My leave",
+  "newRequest": "Request leave",
+  "editRequest": "Edit leave request",
+  "detail": "Leave request",
+  "approvals": "Awaiting my approval",
+  "fields": {
+    "code": "Request no.",
+    "employee": "Employee",
+    "leaveType": "Leave type",
+    "startDate": "From",
+    "endDate": "To",
+    "startDayPart": "First day",
+    "endDayPart": "Last day",
+    "totalDays": "Days requested",
+    "reason": "Reason",
+    "contactPhone": "Contact number while away",
+    "handoverTo": "Handover to",
+    "handoverNote": "Handover notes",
+    "submittedAt": "Submitted",
+    "decidedAt": "Decided",
+    "status": "Status"
+  },
+  "dayPart": {
+    "FULL": "Full day",
+    "MORNING": "Morning",
+    "AFTERNOON": "Afternoon"
+  },
+  "status": {
+    "DRAFT": "Draft",
+    "PENDING": "Pending approval",
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected",
+    "CANCELLED": "Cancelled"
+  },
+  "approval": {
+    "title": "Approval flow",
+    "step": "Step {step}",
+    "approver": "Approver",
+    "comment": "Comment",
+    "actedAt": "Decided at",
+    "status": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected",
+      "SKIPPED": "Skipped"
+    },
+    "approveConfirm": "Approve the leave request from {name}?",
+    "rejectConfirm": "Reject the leave request from {name}?",
+    "commentPlaceholder": "Your comment (optional when approving)",
+    "rejectReasonRequired": "Please give a reason for rejecting.",
+    "approved": "Leave request approved.",
+    "rejected": "Leave request rejected.",
+    "notYourTurn": "This request is not waiting on you yet.",
+    "noPending": "Nothing is waiting for your approval."
+  },
+  "balance": {
+    "title": "Leave balance",
+    "year": "Year",
+    "entitled": "Entitlement",
+    "carriedOver": "Carried over",
+    "adjustment": "Adjustment",
+    "used": "Taken",
+    "pending": "Pending",
+    "available": "Available",
+    "totalAvailable": "Total available",
+    "days": "{count} days",
+    "recalculate": "Recalculate balances",
+    "generateForYear": "Create balances for {year}",
+    "generated": "Balances created for {count} employees.",
+    "adjustTitle": "Adjust balance",
+    "adjustHint": "Enter a positive number to add days, a negative number to deduct."
+  },
+  "types": {
+    "title": "Leave types",
+    "new": "New leave type",
+    "defaultDaysPerYear": "Default days per year",
+    "isPaid": "Paid leave",
+    "allowHalfDay": "Allow half days",
+    "requiresAttachment": "Attachment required",
+    "carryOverLimitDays": "Days that may carry over",
+    "carryOverExpiry": "Carry-over expiry (MM-DD)",
+    "maxConsecutiveDays": "Max consecutive days",
+    "minNoticeDays": "Minimum notice (days)",
+    "deductsBalance": "Deducts from balance",
+    "color": "Display colour"
+  },
+  "holidays": {
+    "title": "Public holidays",
+    "new": "New holiday",
+    "date": "Date",
+    "name": "Holiday name",
+    "isRecurring": "Repeats every year",
+    "isHalfDay": "Half day",
+    "hint": "Holidays and weekends are excluded from the leave day count."
+  },
+  "calendar": {
+    "title": "Leave calendar",
+    "teamView": "Team calendar",
+    "noLeave": "Nobody is away during this period."
+  },
+  "validation": {
+    "endBeforeStart": "The end date must be on or after the start date.",
+    "noWorkingDays": "The selected range contains no working days.",
+    "insufficientBalance": "Not enough balance: {available} days available, {requested} days requested.",
+    "overlapping": "You already have a leave request overlapping these dates ({code}).",
+    "halfDayNotAllowed": "This leave type does not allow half days.",
+    "maxConsecutiveExceeded": "This leave type allows at most {max} consecutive days.",
+    "minNoticeNotMet": "This leave type requires at least {days} days of notice.",
+    "attachmentRequired": "This leave type requires a supporting document.",
+    "noApprover": "No approver is configured for this employee. Contact HR."
+  },
+  "toast": {
+    "submitted": "Leave request submitted for approval.",
+    "savedDraft": "Leave request saved as draft.",
+    "cancelled": "Leave request cancelled."
+  }
+}

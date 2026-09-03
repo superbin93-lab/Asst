@@ -1,0 +1,981 @@
+// ============================================================================
+//  IT Asset & Workplace Suite - Prisma schema
+//  Modules: Core/Auth · HR · Leave · IT Assets · Helpdesk
+// ============================================================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+  runtime  = "nodejs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================================
+//  ENUMS
+// ============================================================================
+
+enum Locale {
+  vi
+  en
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERN
+  OUTSOURCED
+}
+
+enum EmployeeStatus {
+  PROBATION
+  ACTIVE
+  ON_LEAVE
+  SUSPENDED
+  TERMINATED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ContractType {
+  PROBATION
+  FIXED_TERM
+  INDEFINITE
+  SEASONAL
+  SERVICE
+}
+
+enum ContractStatus {
+  DRAFT
+  ACTIVE
+  EXPIRING
+  EXPIRED
+  TERMINATED
+}
+
+enum LocationType {
+  OFFICE
+  FLOOR
+  ROOM
+  WAREHOUSE
+  DATACENTER
+  REMOTE
+}
+
+enum AssetStatus {
+  IN_STOCK
+  ASSIGNED
+  IN_REPAIR
+  RESERVED
+  RETIRED
+  LOST
+  DISPOSED
+}
+
+enum AssetCondition {
+  NEW
+  GOOD
+  FAIR
+  POOR
+  BROKEN
+}
+
+enum DepreciationMethod {
+  NONE
+  STRAIGHT_LINE
+  DECLINING_BALANCE
+}
+
+enum AssignmentStatus {
+  ACTIVE
+  RETURNED
+  OVERDUE
+}
+
+enum MaintenanceType {
+  PREVENTIVE
+  REPAIR
+  UPGRADE
+  INSPECTION
+  CALIBRATION
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum LicenseType {
+  PERPETUAL
+  SUBSCRIPTION
+  OEM
+  VOLUME
+  OPEN_SOURCE
+  TRIAL
+}
+
+enum StockTxnType {
+  IN
+  OUT
+  ADJUST
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketStatus {
+  NEW
+  OPEN
+  PENDING_REQUESTER
+  ON_HOLD
+  RESOLVED
+  CLOSED
+  CANCELLED
+}
+
+enum TicketSource {
+  WEB
+  EMAIL
+  PHONE
+  CHAT
+  WALK_IN
+}
+
+enum LeaveDayPart {
+  FULL
+  MORNING
+  AFTERNOON
+}
+
+enum RequestStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SKIPPED
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  ASSIGN
+  RETURN
+  APPROVE
+  REJECT
+  EXPORT
+}
+
+// ============================================================================
+//  CORE · Auth, RBAC, audit
+// ============================================================================
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  avatarUrl    String?
+  locale       Locale   @default(vi)
+  isActive     Boolean  @default(true)
+  isSuperAdmin Boolean  @default(false)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  employee   Employee?  @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  employeeId String?    @unique
+
+  roles     UserRole[]
+  sessions  Session[]
+  auditLogs AuditLog[]
+
+  createdAssets       Asset[]            @relation("AssetCreatedBy")
+  assignmentsGiven    AssetAssignment[]  @relation("AssignmentIssuedBy")
+  assignmentsReceived AssetAssignment[]  @relation("AssignmentReceivedBy")
+  assignedTickets     Ticket[]           @relation("TicketAssignee")
+  createdTickets      Ticket[]           @relation("TicketCreatedBy")
+  ticketComments      TicketComment[]
+  ticketEvents        TicketEvent[]
+  assetEvents         AssetEvent[]
+  approvals           LeaveApproval[]
+  notifications       Notification[]
+  attachments         Attachment[]
+  stockTransactions   StockTransaction[]
+
+  @@index([isActive])
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  nameEn      String?
+  description String?
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       UserRole[]
+  permissions RolePermission[]
+}
+
+model RolePermission {
+  id         String @id @default(cuid())
+  roleId     String
+  permission String
+
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permission])
+  @@index([permission])
+}
+
+model UserRole {
+  userId String
+  roleId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  userId     String?
+  action     AuditAction
+  entityType String
+  entityId   String?
+  summary    String?
+  changes    Json?
+  ip         String?
+  createdAt  DateTime    @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  body      String?
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+}
+
+model Attachment {
+  id           String   @id @default(cuid())
+  entityType   String
+  entityId     String
+  fileName     String
+  storageKey   String
+  mimeType     String
+  sizeBytes    Int
+  uploadedById String?
+  createdAt    DateTime @default(now())
+
+  uploadedBy User? @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+}
+
+/// Per-entity running counters used to mint human-readable codes (AST-2026-0001, TK-2026-0042, ...)
+model Sequence {
+  key       String   @id
+  value     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================================================
+//  HR · Organisation, employees, contracts
+// ============================================================================
+
+model Department {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  nameEn      String?
+  description String?
+  parentId    String?
+  managerId   String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  parent   Department?  @relation("DepartmentTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Department[] @relation("DepartmentTree")
+  manager  Employee?    @relation("DepartmentManager", fields: [managerId], references: [id], onDelete: SetNull)
+
+  employees Employee[] @relation("EmployeeDepartment")
+  assets    Asset[]
+  tickets   Ticket[]
+
+  @@index([parentId])
+}
+
+model Position {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  title     String
+  titleEn   String?
+  level     Int      @default(1)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employees Employee[]
+}
+
+model Employee {
+  id             String         @id @default(cuid())
+  employeeCode   String         @unique
+  fullName       String
+  email          String         @unique
+  personalEmail  String?
+  phone          String?
+  dateOfBirth    DateTime?
+  gender         Gender?
+  nationalId     String?
+  taxCode        String?
+  socialInsuranceNo String?
+  address        String?
+  emergencyContact String?
+  emergencyPhone   String?
+  avatarUrl      String?
+
+  departmentId String?
+  positionId   String?
+  managerId    String?
+  locationId   String?
+
+  employmentType EmploymentType @default(FULL_TIME)
+  status         EmployeeStatus @default(PROBATION)
+  hireDate       DateTime
+  probationEndDate DateTime?
+  terminationDate  DateTime?
+  terminationReason String?
+
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  department Department? @relation("EmployeeDepartment", fields: [departmentId], references: [id], onDelete: SetNull)
+  position   Position?   @relation(fields: [positionId], references: [id], onDelete: SetNull)
+  manager    Employee?   @relation("EmployeeManager", fields: [managerId], references: [id], onDelete: SetNull)
+  location   Location?   @relation(fields: [locationId], references: [id], onDelete: SetNull)
+
+  reports        Employee[]   @relation("EmployeeManager")
+  managedDepartments Department[] @relation("DepartmentManager")
+  user           User?
+
+  contracts        EmploymentContract[]
+  assetsHeld       Asset[]              @relation("AssetHolder")
+  assetAssignments AssetAssignment[]
+  licenseSeats     LicenseSeat[]
+  leaveBalances    LeaveBalance[]
+  leaveRequests    LeaveRequest[]       @relation("LeaveRequester")
+  handoverTasks    LeaveRequest[]       @relation("LeaveHandover")
+  requestedTickets Ticket[]             @relation("TicketRequester")
+  stockIssues      StockTransaction[]
+
+  @@index([departmentId])
+  @@index([status])
+  @@index([managerId])
+}
+
+model EmploymentContract {
+  id          String         @id @default(cuid())
+  contractNo  String         @unique
+  employeeId  String
+  type        ContractType
+  status      ContractStatus @default(ACTIVE)
+  startDate   DateTime
+  endDate     DateTime?
+  baseSalary  Decimal?       @db.Decimal(14, 2)
+  currency    String         @default("VND")
+  signedAt    DateTime?
+  notes       String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@index([endDate])
+}
+
+// ============================================================================
+//  IT ASSETS · Catalogue, lifecycle, licences, consumables
+// ============================================================================
+
+model Location {
+  id        String       @id @default(cuid())
+  code      String       @unique
+  name      String
+  type      LocationType @default(OFFICE)
+  parentId  String?
+  address   String?
+  isActive  Boolean      @default(true)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  parent   Location?  @relation("LocationTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Location[] @relation("LocationTree")
+
+  assets      Asset[]
+  employees   Employee[]
+  consumables Consumable[]
+  tickets     Ticket[]
+
+  @@index([parentId])
+}
+
+model Vendor {
+  id             String   @id @default(cuid())
+  code           String   @unique
+  name           String
+  contactName    String?
+  email          String?
+  phone          String?
+  address        String?
+  taxCode        String?
+  website        String?
+  isManufacturer Boolean  @default(false)
+  isSupplier     Boolean  @default(true)
+  notes          String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  manufacturedAssets Asset[]            @relation("AssetManufacturer")
+  suppliedAssets     Asset[]            @relation("AssetSupplier")
+  licenses           SoftwareLicense[]
+  maintenances       AssetMaintenance[]
+}
+
+model AssetCategory {
+  id                      String   @id @default(cuid())
+  code                    String   @unique
+  name                    String
+  nameEn                  String?
+  icon                    String?
+  parentId                String?
+  defaultUsefulLifeMonths Int?
+  defaultWarrantyMonths   Int?
+  isActive                Boolean  @default(true)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  parent   AssetCategory?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children AssetCategory[] @relation("CategoryTree")
+
+  assets      Asset[]
+  consumables Consumable[]
+
+  @@index([parentId])
+}
+
+model Asset {
+  id         String         @id @default(cuid())
+  assetTag   String         @unique
+  name       String
+  categoryId String
+  status     AssetStatus    @default(IN_STOCK)
+  condition  AssetCondition @default(NEW)
+
+  serialNumber   String?
+  model          String?
+  manufacturerId String?
+  supplierId     String?
+
+  purchaseDate DateTime?
+  purchaseCost Decimal?  @db.Decimal(14, 2)
+  currency     String    @default("VND")
+  invoiceNo    String?
+  poNumber     String?
+
+  warrantyMonths Int?
+  warrantyEndAt  DateTime?
+
+  usefulLifeMonths   Int?
+  depreciationMethod DepreciationMethod @default(STRAIGHT_LINE)
+  salvageValue       Decimal?           @db.Decimal(14, 2)
+
+  locationId   String?
+  departmentId String?
+  holderId     String?
+
+  imageUrl String?
+  /// Free-form technical specification, e.g. { "cpu": "i7-1355U", "ram": "16GB" }
+  specs    Json?
+  notes    String?
+
+  disposedAt   DateTime?
+  disposalNote String?
+
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category     AssetCategory @relation(fields: [categoryId], references: [id])
+  manufacturer Vendor?       @relation("AssetManufacturer", fields: [manufacturerId], references: [id], onDelete: SetNull)
+  supplier     Vendor?       @relation("AssetSupplier", fields: [supplierId], references: [id], onDelete: SetNull)
+  location     Location?     @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  department   Department?   @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  holder       Employee?     @relation("AssetHolder", fields: [holderId], references: [id], onDelete: SetNull)
+  createdBy    User?         @relation("AssetCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  assignments  AssetAssignment[]
+  maintenances AssetMaintenance[]
+  events       AssetEvent[]
+  licenseSeats LicenseSeat[]
+  tickets      Ticket[]
+
+  @@index([status])
+  @@index([categoryId])
+  @@index([holderId])
+  @@index([locationId])
+  @@index([warrantyEndAt])
+  @@index([serialNumber])
+}
+
+model AssetAssignment {
+  id               String           @id @default(cuid())
+  assetId          String
+  employeeId       String
+  status           AssignmentStatus @default(ACTIVE)
+  assignedAt       DateTime         @default(now())
+  expectedReturnAt DateTime?
+  returnedAt       DateTime?
+  conditionOut     AssetCondition?
+  conditionIn      AssetCondition?
+  issuedById       String?
+  receivedById     String?
+  note             String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  asset      Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  issuedBy   User?    @relation("AssignmentIssuedBy", fields: [issuedById], references: [id], onDelete: SetNull)
+  receivedBy User?    @relation("AssignmentReceivedBy", fields: [receivedById], references: [id], onDelete: SetNull)
+
+  @@index([assetId])
+  @@index([employeeId])
+  @@index([status])
+}
+
+model AssetMaintenance {
+  id          String            @id @default(cuid())
+  assetId     String
+  type        MaintenanceType   @default(REPAIR)
+  status      MaintenanceStatus @default(SCHEDULED)
+  title       String
+  description String?
+  vendorId    String?
+  cost        Decimal?          @db.Decimal(14, 2)
+  currency    String            @default("VND")
+  scheduledAt DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+  nextDueAt   DateTime?
+  performedBy String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  asset  Asset   @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  vendor Vendor? @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+
+  @@index([assetId])
+  @@index([status])
+  @@index([nextDueAt])
+}
+
+/// Immutable timeline entry rendered on the asset detail page.
+model AssetEvent {
+  id        String   @id @default(cuid())
+  assetId   String
+  type      String
+  message   String
+  meta      Json?
+  actorId   String?
+  createdAt DateTime @default(now())
+
+  asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([assetId, createdAt])
+}
+
+model SoftwareLicense {
+  id           String      @id @default(cuid())
+  name         String
+  vendorId     String?
+  licenseKey   String?
+  type         LicenseType @default(SUBSCRIPTION)
+  seatsTotal   Int         @default(1)
+  purchaseDate DateTime?
+  expiryDate   DateTime?
+  cost         Decimal?    @db.Decimal(14, 2)
+  currency     String      @default("VND")
+  notes        String?
+  isActive     Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  vendor Vendor?       @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+  seats  LicenseSeat[]
+
+  @@index([expiryDate])
+}
+
+model LicenseSeat {
+  id         String    @id @default(cuid())
+  licenseId  String
+  employeeId String?
+  assetId    String?
+  assignedAt DateTime  @default(now())
+  revokedAt  DateTime?
+  note       String?
+
+  license  SoftwareLicense @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+  employee Employee?       @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  asset    Asset?          @relation(fields: [assetId], references: [id], onDelete: SetNull)
+
+  @@index([licenseId, revokedAt])
+}
+
+model Consumable {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  categoryId  String?
+  locationId  String?
+  unit        String   @default("PCS")
+  quantity    Int      @default(0)
+  minQuantity Int      @default(0)
+  unitCost    Decimal? @db.Decimal(14, 2)
+  currency    String   @default("VND")
+  notes       String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category AssetCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  location Location?      @relation(fields: [locationId], references: [id], onDelete: SetNull)
+
+  transactions StockTransaction[]
+}
+
+model StockTransaction {
+  id           String       @id @default(cuid())
+  consumableId String
+  type         StockTxnType
+  quantity     Int
+  balanceAfter Int
+  employeeId   String?
+  actorId      String?
+  note         String?
+  createdAt    DateTime     @default(now())
+
+  consumable Consumable @relation(fields: [consumableId], references: [id], onDelete: Cascade)
+  employee   Employee?  @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  actor      User?      @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([consumableId, createdAt])
+}
+
+// ============================================================================
+//  HELPDESK · Tickets, SLA, conversation
+// ============================================================================
+
+model SlaPolicy {
+  id                 String   @id @default(cuid())
+  name               String
+  priority           TicketPriority
+  responseMinutes    Int
+  resolutionMinutes  Int
+  businessHoursOnly  Boolean  @default(true)
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  categories TicketCategory[]
+
+  @@unique([name, priority])
+}
+
+model TicketCategory {
+  id                String   @id @default(cuid())
+  code              String   @unique
+  name              String
+  nameEn            String?
+  parentId          String?
+  slaPolicyId       String?
+  defaultAssigneeId String?
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  parent   TicketCategory?  @relation("TicketCategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children TicketCategory[] @relation("TicketCategoryTree")
+  sla      SlaPolicy?       @relation(fields: [slaPolicyId], references: [id], onDelete: SetNull)
+
+  tickets Ticket[]
+
+  @@index([parentId])
+}
+
+model Ticket {
+  id          String         @id @default(cuid())
+  code        String         @unique
+  title       String
+  description String
+  status      TicketStatus   @default(NEW)
+  priority    TicketPriority @default(MEDIUM)
+  source      TicketSource   @default(WEB)
+
+  categoryId   String?
+  requesterId  String?
+  assigneeId   String?
+  createdById  String?
+  assetId      String?
+  locationId   String?
+  departmentId String?
+
+  responseDueAt   DateTime?
+  resolutionDueAt DateTime?
+  firstResponseAt DateTime?
+  resolvedAt      DateTime?
+  closedAt        DateTime?
+  reopenedCount   Int       @default(0)
+  slaResponseBreached   Boolean @default(false)
+  slaResolutionBreached Boolean @default(false)
+
+  resolution       String?
+  satisfaction     Int?
+  satisfactionNote String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category   TicketCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  requester  Employee?       @relation("TicketRequester", fields: [requesterId], references: [id], onDelete: SetNull)
+  assignee   User?           @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdBy  User?           @relation("TicketCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  asset      Asset?          @relation(fields: [assetId], references: [id], onDelete: SetNull)
+  location   Location?       @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  department Department?     @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+
+  comments TicketComment[]
+  events   TicketEvent[]
+
+  @@index([status])
+  @@index([assigneeId, status])
+  @@index([requesterId])
+  @@index([priority])
+  @@index([createdAt])
+  @@index([resolutionDueAt])
+}
+
+model TicketComment {
+  id         String   @id @default(cuid())
+  ticketId   String
+  authorId   String?
+  body       String
+  isInternal Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author User?  @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([ticketId, createdAt])
+}
+
+model TicketEvent {
+  id        String   @id @default(cuid())
+  ticketId  String
+  type      String
+  message   String
+  meta      Json?
+  actorId   String?
+  createdAt DateTime @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  actor  User?  @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([ticketId, createdAt])
+}
+
+// ============================================================================
+//  LEAVE · Entitlement, requests, multi-step approval
+// ============================================================================
+
+model LeaveType {
+  id                  String   @id @default(cuid())
+  code                String   @unique
+  name                String
+  nameEn              String?
+  color               String   @default("#2563eb")
+  defaultDaysPerYear  Float    @default(0)
+  isPaid              Boolean  @default(true)
+  allowHalfDay        Boolean  @default(true)
+  requiresAttachment  Boolean  @default(false)
+  /// Unused days that may roll into next year; 0 disables carry-over.
+  carryOverLimitDays  Float    @default(0)
+  /// Deadline (month/day) by which carried-over days expire, e.g. "03-31".
+  carryOverExpiry     String?
+  maxConsecutiveDays  Int?
+  minNoticeDays       Int      @default(0)
+  deductsBalance      Boolean  @default(true)
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  balances LeaveBalance[]
+  requests LeaveRequest[]
+}
+
+model LeaveBalance {
+  id              String   @id @default(cuid())
+  employeeId      String
+  leaveTypeId     String
+  year            Int
+  entitledDays    Float    @default(0)
+  carriedOverDays Float    @default(0)
+  adjustmentDays  Float    @default(0)
+  usedDays        Float    @default(0)
+  pendingDays     Float    @default(0)
+  note            String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  employee  Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  leaveType LeaveType @relation(fields: [leaveTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, leaveTypeId, year])
+  @@index([year])
+}
+
+model LeaveRequest {
+  id          String        @id @default(cuid())
+  code        String        @unique
+  employeeId  String
+  leaveTypeId String
+  status      RequestStatus @default(DRAFT)
+
+  startDate     DateTime
+  endDate       DateTime
+  startDayPart  LeaveDayPart @default(FULL)
+  endDayPart    LeaveDayPart @default(FULL)
+  totalDays     Float
+
+  reason       String
+  contactPhone String?
+  handoverToId String?
+  handoverNote String?
+
+  submittedAt DateTime?
+  decidedAt   DateTime?
+  cancelledAt DateTime?
+  cancelReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employee   Employee  @relation("LeaveRequester", fields: [employeeId], references: [id], onDelete: Cascade)
+  leaveType  LeaveType @relation(fields: [leaveTypeId], references: [id])
+  handoverTo Employee? @relation("LeaveHandover", fields: [handoverToId], references: [id], onDelete: SetNull)
+
+  approvals LeaveApproval[]
+
+  @@index([employeeId, status])
+  @@index([startDate, endDate])
+  @@index([status])
+}
+
+model LeaveApproval {
+  id         String         @id @default(cuid())
+  requestId  String
+  approverId String
+  step       Int
+  status     ApprovalStatus @default(PENDING)
+  comment    String?
+  actedAt    DateTime?
+  createdAt  DateTime       @default(now())
+
+  request  LeaveRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  approver User         @relation(fields: [approverId], references: [id], onDelete: Cascade)
+
+  @@unique([requestId, step])
+  @@index([approverId, status])
+}
+
+model Holiday {
+  id          String   @id @default(cuid())
+  date        DateTime @db.Date
+  name        String
+  nameEn      String?
+  /// Repeats on the same month/day every year (e.g. National Day).
+  isRecurring Boolean  @default(false)
+  isHalfDay   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@unique([date, name])
+  @@index([date])
+}

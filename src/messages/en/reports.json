@@ -1,0 +1,49 @@
+{
+  "title": "Reports",
+  "subtitle": "Aggregated figures across modules",
+  "period": "Reporting period",
+  "thisMonth": "This month",
+  "thisQuarter": "This quarter",
+  "thisYear": "This year",
+  "custom": "Custom",
+  "assets": {
+    "title": "Asset report",
+    "byCategory": "By category",
+    "byStatus": "By status",
+    "byDepartment": "By department",
+    "byLocation": "By location",
+    "totalValue": "Total acquisition value",
+    "bookValue": "Net book value",
+    "acquiredThisPeriod": "Acquired in period",
+    "disposedThisPeriod": "Disposed in period",
+    "maintenanceCost": "Maintenance spend"
+  },
+  "tickets": {
+    "title": "Helpdesk report",
+    "volume": "Ticket volume",
+    "byCategory": "By category",
+    "byPriority": "By priority",
+    "byAssignee": "By assignee",
+    "avgResponseTime": "Average first response",
+    "avgResolutionTime": "Average resolution time",
+    "slaCompliance": "SLA compliance",
+    "satisfaction": "Average satisfaction"
+  },
+  "leave": {
+    "title": "Leave report",
+    "byType": "By leave type",
+    "byDepartment": "By department",
+    "daysTaken": "Days taken",
+    "remainingBalance": "Remaining balance",
+    "topUsers": "Most days taken"
+  },
+  "hr": {
+    "title": "People report",
+    "headcountTrend": "Headcount trend",
+    "byDepartment": "By department",
+    "byEmploymentType": "By employment type",
+    "newHires": "New hires",
+    "terminations": "Leavers",
+    "turnoverRate": "Turnover rate"
+  }
+}

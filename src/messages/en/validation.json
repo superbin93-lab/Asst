@@ -1,0 +1,17 @@
+{
+  "required": "This field is required",
+  "invalidEmail": "Enter a valid email address",
+  "invalidPhone": "Enter a valid phone number",
+  "invalidDate": "Enter a valid date",
+  "invalidNumber": "Value must be a number",
+  "invalidUrl": "Enter a valid URL",
+  "minLength": "At least {min} characters",
+  "maxLength": "At most {max} characters",
+  "min": "Minimum value is {min}",
+  "max": "Maximum value is {max}",
+  "positive": "Value must be greater than 0",
+  "codeFormat": "Use uppercase letters, digits, hyphen and underscore only",
+  "duplicate": "This value already exists",
+  "notFound": "Record not found",
+  "cannotDeleteInUse": "Cannot delete: the record is still in use"
+}

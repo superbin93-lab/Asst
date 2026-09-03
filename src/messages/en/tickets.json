@@ -1,0 +1,106 @@
+{
+  "title": "Support tickets",
+  "subtitle": "Intake and resolution of internal support requests",
+  "singular": "ticket",
+  "new": "New ticket",
+  "detail": "Ticket details",
+  "mine": "My tickets",
+  "assignedToMe": "Assigned to me",
+  "fields": {
+    "code": "Ticket no.",
+    "title": "Subject",
+    "description": "Description",
+    "category": "Category",
+    "priority": "Priority",
+    "status": "Status",
+    "source": "Channel",
+    "requester": "Requester",
+    "assignee": "Assignee",
+    "asset": "Related asset",
+    "location": "Location",
+    "department": "Department",
+    "responseDueAt": "Response due",
+    "resolutionDueAt": "Resolution due",
+    "firstResponseAt": "First response",
+    "resolvedAt": "Resolved at",
+    "closedAt": "Closed at",
+    "resolution": "Resolution",
+    "satisfaction": "Rating"
+  },
+  "status": {
+    "NEW": "New",
+    "OPEN": "In progress",
+    "PENDING_REQUESTER": "Waiting on requester",
+    "ON_HOLD": "On hold",
+    "RESOLVED": "Resolved",
+    "CLOSED": "Closed",
+    "CANCELLED": "Cancelled"
+  },
+  "priority": {
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High",
+    "URGENT": "Urgent"
+  },
+  "source": {
+    "WEB": "Web",
+    "EMAIL": "Email",
+    "PHONE": "Phone",
+    "CHAT": "Chat",
+    "WALK_IN": "Walk-in"
+  },
+  "sla": {
+    "title": "SLA policies",
+    "responseTime": "Response time",
+    "resolutionTime": "Resolution time",
+    "businessHoursOnly": "Business hours only",
+    "onTrack": "On track",
+    "dueSoon": "Due soon",
+    "breached": "Breached",
+    "remaining": "{duration} left",
+    "overdueBy": "{duration} overdue",
+    "minutes": "min",
+    "hours": "h"
+  },
+  "comments": {
+    "title": "Conversation",
+    "placeholder": "Write a reply...",
+    "internalNote": "Internal note",
+    "internalHint": "The requester will not see internal notes.",
+    "send": "Send",
+    "empty": "No replies yet."
+  },
+  "timeline": {
+    "created": "Ticket created",
+    "assigned": "Assigned to {name}",
+    "unassigned": "Assignee cleared",
+    "statusChanged": "Status changed: {from} to {to}",
+    "priorityChanged": "Priority changed: {from} to {to}",
+    "resolved": "Marked as resolved",
+    "reopened": "Ticket reopened",
+    "closed": "Ticket closed"
+  },
+  "actions": {
+    "assignToMe": "Assign to me",
+    "reassign": "Reassign",
+    "resolve": "Mark as resolved",
+    "reopen": "Reopen",
+    "closeTicket": "Close ticket",
+    "changePriority": "Change priority"
+  },
+  "filters": {
+    "keyword": "Search number, subject...",
+    "onlyMine": "Only my requests",
+    "onlyAssignedToMe": "Only assigned to me",
+    "unassigned": "Unassigned",
+    "slaBreached": "SLA breached"
+  },
+  "categories": {
+    "title": "Ticket categories",
+    "defaultAssignee": "Default assignee",
+    "slaPolicy": "SLA policy"
+  },
+  "validation": {
+    "resolutionRequired": "Add a resolution before closing the ticket."
+  }
+}

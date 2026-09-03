@@ -1,0 +1,102 @@
+{
+  "title": "People",
+  "employees": {
+    "title": "Employees",
+    "subtitle": "Company-wide employee records",
+    "singular": "employee",
+    "new": "New employee",
+    "edit": "Edit employee",
+    "detail": "Employee profile",
+    "fields": {
+      "employeeCode": "Employee ID",
+      "fullName": "Full name",
+      "email": "Work email",
+      "personalEmail": "Personal email",
+      "phone": "Phone",
+      "dateOfBirth": "Date of birth",
+      "gender": "Gender",
+      "nationalId": "National ID",
+      "taxCode": "Tax code",
+      "socialInsuranceNo": "Social insurance no.",
+      "address": "Address",
+      "emergencyContact": "Emergency contact",
+      "emergencyPhone": "Emergency phone",
+      "department": "Department",
+      "position": "Position",
+      "manager": "Reports to",
+      "location": "Work location",
+      "employmentType": "Employment type",
+      "status": "Status",
+      "hireDate": "Hire date",
+      "probationEndDate": "Probation ends",
+      "terminationDate": "Termination date",
+      "terminationReason": "Termination reason",
+      "tenure": "Tenure"
+    },
+    "gender": { "MALE": "Male", "FEMALE": "Female", "OTHER": "Other" },
+    "employmentType": {
+      "FULL_TIME": "Full time",
+      "PART_TIME": "Part time",
+      "CONTRACT": "Contractor",
+      "INTERN": "Intern",
+      "OUTSOURCED": "Outsourced"
+    },
+    "status": {
+      "PROBATION": "Probation",
+      "ACTIVE": "Active",
+      "ON_LEAVE": "On long leave",
+      "SUSPENDED": "Suspended",
+      "TERMINATED": "Terminated"
+    },
+    "tabs": {
+      "profile": "Profile",
+      "assets": "Assets held",
+      "contracts": "Contracts",
+      "leave": "Leave",
+      "tickets": "Tickets raised"
+    },
+    "validation": {
+      "codeTaken": "That employee ID is already taken.",
+      "emailTaken": "That email is already in use."
+    }
+  },
+  "departments": {
+    "title": "Departments",
+    "new": "New department",
+    "parent": "Parent department",
+    "manager": "Department head",
+    "headcount": "Headcount",
+    "assetCount": "Assets"
+  },
+  "positions": {
+    "title": "Positions",
+    "new": "New position",
+    "titleField": "Position title",
+    "level": "Level"
+  },
+  "contracts": {
+    "title": "Employment contracts",
+    "new": "New contract",
+    "contractNo": "Contract no.",
+    "type": "Contract type",
+    "startDate": "Effective from",
+    "endDate": "Expires on",
+    "baseSalary": "Base salary",
+    "signedAt": "Signed on",
+    "types": {
+      "PROBATION": "Probation",
+      "FIXED_TERM": "Fixed term",
+      "INDEFINITE": "Indefinite term",
+      "SEASONAL": "Seasonal",
+      "SERVICE": "Service agreement"
+    },
+    "statuses": {
+      "DRAFT": "Draft",
+      "ACTIVE": "Active",
+      "EXPIRING": "Expiring",
+      "EXPIRED": "Expired",
+      "TERMINATED": "Terminated"
+    },
+    "expiringSoon": "Expires within {days} days"
+  }
+}

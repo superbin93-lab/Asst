@@ -1,0 +1,106 @@
+{
+  "title": "Ticket hỗ trợ",
+  "subtitle": "Tiếp nhận và xử lý yêu cầu hỗ trợ nội bộ",
+  "singular": "ticket",
+  "new": "Tạo ticket",
+  "detail": "Chi tiết ticket",
+  "mine": "Ticket của tôi",
+  "assignedToMe": "Được giao cho tôi",
+  "fields": {
+    "code": "Mã ticket",
+    "title": "Tiêu đề",
+    "description": "Mô tả chi tiết",
+    "category": "Nhóm yêu cầu",
+    "priority": "Mức ưu tiên",
+    "status": "Trạng thái",
+    "source": "Nguồn tiếp nhận",
+    "requester": "Người yêu cầu",
+    "assignee": "Người xử lý",
+    "asset": "Tài sản liên quan",
+    "location": "Vị trí",
+    "department": "Phòng ban",
+    "responseDueAt": "Hạn phản hồi",
+    "resolutionDueAt": "Hạn xử lý",
+    "firstResponseAt": "Phản hồi đầu tiên",
+    "resolvedAt": "Đã xử lý lúc",
+    "closedAt": "Đóng lúc",
+    "resolution": "Nội dung xử lý",
+    "satisfaction": "Đánh giá"
+  },
+  "status": {
+    "NEW": "Mới",
+    "OPEN": "Đang xử lý",
+    "PENDING_REQUESTER": "Chờ người yêu cầu",
+    "ON_HOLD": "Tạm dừng",
+    "RESOLVED": "Đã xử lý",
+    "CLOSED": "Đã đóng",
+    "CANCELLED": "Đã huỷ"
+  },
+  "priority": {
+    "LOW": "Thấp",
+    "MEDIUM": "Trung bình",
+    "HIGH": "Cao",
+    "URGENT": "Khẩn cấp"
+  },
+  "source": {
+    "WEB": "Web",
+    "EMAIL": "Email",
+    "PHONE": "Điện thoại",
+    "CHAT": "Chat",
+    "WALK_IN": "Trực tiếp"
+  },
+  "sla": {
+    "title": "Chính sách SLA",
+    "responseTime": "Thời gian phản hồi",
+    "resolutionTime": "Thời gian xử lý",
+    "businessHoursOnly": "Chỉ tính giờ hành chính",
+    "onTrack": "Trong hạn",
+    "dueSoon": "Sắp đến hạn",
+    "breached": "Quá hạn",
+    "remaining": "Còn {duration}",
+    "overdueBy": "Quá {duration}",
+    "minutes": "phút",
+    "hours": "giờ"
+  },
+  "comments": {
+    "title": "Trao đổi",
+    "placeholder": "Nhập nội dung trao đổi...",
+    "internalNote": "Ghi chú nội bộ",
+    "internalHint": "Người yêu cầu sẽ không nhìn thấy ghi chú nội bộ.",
+    "send": "Gửi",
+    "empty": "Chưa có trao đổi nào."
+  },
+  "timeline": {
+    "created": "Tạo ticket",
+    "assigned": "Giao cho {name}",
+    "unassigned": "Bỏ phân công",
+    "statusChanged": "Đổi trạng thái: {from} → {to}",
+    "priorityChanged": "Đổi mức ưu tiên: {from} → {to}",
+    "resolved": "Đánh dấu đã xử lý",
+    "reopened": "Mở lại ticket",
+    "closed": "Đóng ticket"
+  },
+  "actions": {
+    "assignToMe": "Nhận xử lý",
+    "reassign": "Chuyển người xử lý",
+    "resolve": "Đánh dấu đã xử lý",
+    "reopen": "Mở lại",
+    "closeTicket": "Đóng ticket",
+    "changePriority": "Đổi mức ưu tiên"
+  },
+  "filters": {
+    "keyword": "Tìm theo mã, tiêu đề...",
+    "onlyMine": "Chỉ ticket của tôi",
+    "onlyAssignedToMe": "Chỉ việc của tôi",
+    "unassigned": "Chưa phân công",
+    "slaBreached": "Quá hạn SLA"
+  },
+  "categories": {
+    "title": "Nhóm ticket",
+    "defaultAssignee": "Người xử lý mặc định",
+    "slaPolicy": "Chính sách SLA áp dụng"
+  },
+  "validation": {
+    "resolutionRequired": "Cần nhập nội dung xử lý trước khi đóng ticket."
+  }
+}

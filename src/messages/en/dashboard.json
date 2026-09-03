@@ -1,0 +1,25 @@
+{
+  "title": "Dashboard",
+  "greeting": "Hello, {name}",
+  "cards": {
+    "totalAssets": "Total assets",
+    "assignedAssets": "In use",
+    "inStock": "In stock",
+    "inRepair": "Under repair",
+    "openTickets": "Open tickets",
+    "overdueTickets": "SLA breached",
+    "pendingLeave": "Leave awaiting approval",
+    "headcount": "Active headcount",
+    "warrantyExpiring": "Warranty expiring",
+    "licenseExpiring": "Licences expiring",
+    "lowStock": "Consumables below minimum"
+  },
+  "sections": {
+    "recentTickets": "Recent tickets",
+    "recentAssignments": "Recent assignments",
+    "upcomingLeave": "Upcoming leave",
+    "assetsByCategory": "Assets by category",
+    "assetsByStatus": "Assets by status"
+  },
+  "empty": "Nothing to show yet."
+}

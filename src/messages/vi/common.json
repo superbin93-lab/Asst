@@ -1,0 +1,93 @@
+{
+  "actions": {
+    "create": "Thêm mới",
+    "edit": "Sửa",
+    "delete": "Xoá",
+    "save": "Lưu",
+    "saveChanges": "Lưu thay đổi",
+    "cancel": "Huỷ",
+    "confirm": "Xác nhận",
+    "close": "Đóng",
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "clearFilters": "Xoá bộ lọc",
+    "export": "Xuất Excel",
+    "import": "Nhập từ file",
+    "refresh": "Tải lại",
+    "back": "Quay lại",
+    "next": "Tiếp",
+    "previous": "Trước",
+    "viewAll": "Xem tất cả",
+    "viewDetail": "Xem chi tiết",
+    "assign": "Cấp phát",
+    "return": "Thu hồi",
+    "approve": "Duyệt",
+    "reject": "Từ chối",
+    "submit": "Gửi",
+    "print": "In"
+  },
+  "labels": {
+    "actions": "Thao tác",
+    "all": "Tất cả",
+    "none": "Không có",
+    "notSet": "Chưa có",
+    "yes": "Có",
+    "no": "Không",
+    "status": "Trạng thái",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Cập nhật",
+    "createdBy": "Người tạo",
+    "note": "Ghi chú",
+    "notes": "Ghi chú",
+    "reason": "Lý do",
+    "from": "Từ",
+    "to": "Đến",
+    "total": "Tổng",
+    "code": "Mã",
+    "name": "Tên",
+    "description": "Mô tả",
+    "email": "Email",
+    "phone": "Điện thoại",
+    "address": "Địa chỉ",
+    "department": "Phòng ban",
+    "location": "Vị trí",
+    "attachments": "Tệp đính kèm",
+    "history": "Lịch sử",
+    "overview": "Tổng quan",
+    "required": "Bắt buộc",
+    "optional": "Không bắt buộc",
+    "selectPlaceholder": "-- Chọn --",
+    "searchPlaceholder": "Nhập từ khoá..."
+  },
+  "table": {
+    "empty": "Không có dữ liệu",
+    "emptyHint": "Thử đổi bộ lọc hoặc thêm bản ghi mới.",
+    "loading": "Đang tải...",
+    "rowsSelected": "Đã chọn {count} dòng",
+    "showing": "Hiển thị {from}-{to} trên {total}",
+    "rowsPerPage": "Số dòng mỗi trang",
+    "page": "Trang {page}/{pages}"
+  },
+  "toast": {
+    "created": "Đã tạo thành công",
+    "updated": "Đã cập nhật",
+    "deleted": "Đã xoá",
+    "error": "Có lỗi xảy ra",
+    "forbidden": "Bạn không có quyền thực hiện thao tác này"
+  },
+  "confirmDelete": {
+    "title": "Xác nhận xoá",
+    "description": "Bạn có chắc muốn xoá {name}? Thao tác này không thể hoàn tác.",
+    "confirm": "Xoá vĩnh viễn"
+  },
+  "theme": {
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Theo hệ thống",
+    "toggle": "Đổi giao diện"
+  },
+  "language": {
+    "label": "Ngôn ngữ",
+    "switch": "Đổi ngôn ngữ"
+  }
+}

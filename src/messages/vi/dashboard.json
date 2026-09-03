@@ -1,0 +1,25 @@
+{
+  "title": "Tổng quan",
+  "greeting": "Xin chào, {name}",
+  "cards": {
+    "totalAssets": "Tổng tài sản",
+    "assignedAssets": "Đang cấp phát",
+    "inStock": "Trong kho",
+    "inRepair": "Đang sửa chữa",
+    "openTickets": "Ticket đang mở",
+    "overdueTickets": "Ticket quá hạn SLA",
+    "pendingLeave": "Đơn phép chờ duyệt",
+    "headcount": "Nhân sự đang làm việc",
+    "warrantyExpiring": "Sắp hết bảo hành",
+    "licenseExpiring": "License sắp hết hạn",
+    "lowStock": "Vật tư dưới định mức"
+  },
+  "sections": {
+    "recentTickets": "Ticket gần đây",
+    "recentAssignments": "Cấp phát gần đây",
+    "upcomingLeave": "Nghỉ phép sắp tới",
+    "assetsByCategory": "Tài sản theo nhóm",
+    "assetsByStatus": "Tài sản theo trạng thái"
+  },
+  "empty": "Chưa có dữ liệu để hiển thị."
+}
