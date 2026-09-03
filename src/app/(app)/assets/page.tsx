@@ -108,7 +108,7 @@ export default async function AssetsPage({ searchParams }: PageProps<"/assets">)
               <TH>
                 <SortHeader field="warrantyEndAt" label={t("fields.warrantyEndAt")} />
               </TH>
-              <TH className="w-10 text-right">{tc("labels.actions")}</TH>
+              <TH className="sticky right-0 w-10 bg-surface-muted text-right">{tc("labels.actions")}</TH>
             </TR>
           </THead>
           <TBody>
@@ -171,7 +171,7 @@ export default async function AssetsPage({ searchParams }: PageProps<"/assets">)
                         </span>
                       )}
                     </TD>
-                    <TD className="text-right">
+                    <TD className="sticky right-0 bg-surface text-right">
                       <AssetRowActions
                         assetId={asset.id}
                         assetTag={asset.assetTag}

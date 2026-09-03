@@ -116,5 +116,7 @@
     "submitted": "Leave request submitted for approval.",
     "savedDraft": "Leave request saved as draft.",
     "cancelled": "Leave request cancelled."
-  }
+  },
+  "noEmployeeProfile": "This account has no employee record",
+  "noEmployeeProfileHint": "Leave needs an employee record. Ask an administrator to link this account to one under Administration > User accounts."
 }

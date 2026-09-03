@@ -27,7 +27,7 @@ export default async function NewLeaveRequestPage() {
     return (
       <div className="mx-auto max-w-3xl space-y-5">
         <PageHeader title={t("newRequest")} />
-        <EmptyState title={t("validation.noApprover")} />
+        <EmptyState title={t("noEmployeeProfile")} description={t("noEmployeeProfileHint")} />
       </div>
     );
   }

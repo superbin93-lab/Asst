@@ -22,7 +22,9 @@
     "smoke": "tsx scripts/smoke.ts",
     "test": "node --test --import tsx tests/**/*.test.ts",
     "postinstall": "prisma generate",
-    "check": "npm run typecheck && npm run lint && npm run i18n:check && npm test"
+    "check": "npm run typecheck && npm run lint && npm run i18n:check && npm test",
+    "verify": "tsx scripts/verify-asset-flow.ts && tsx scripts/verify-leave-flow.ts",
+    "shot": "tsx scripts/screenshot.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

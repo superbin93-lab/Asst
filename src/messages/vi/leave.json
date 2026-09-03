@@ -116,5 +116,7 @@
     "submitted": "Đã gửi đơn nghỉ phép, chờ duyệt.",
     "savedDraft": "Đã lưu nháp đơn nghỉ phép.",
     "cancelled": "Đã huỷ đơn nghỉ phép."
-  }
+  },
+  "noEmployeeProfile": "Tài khoản chưa liên kết hồ sơ nhân viên",
+  "noEmployeeProfileHint": "Chức năng nghỉ phép cần một hồ sơ nhân viên. Nhờ quản trị viên liên kết tài khoản này với hồ sơ trong mục Quản trị > Tài khoản."
 }

@@ -33,7 +33,7 @@ export default async function MyLeavePage({ searchParams }: PageProps<"/leave">)
     return (
       <div className="space-y-5">
         <PageHeader title={t("myLeave")} description={t("subtitle")} />
-        <EmptyState title={t("validation.noApprover")} description={tc("table.emptyHint")} />
+        <EmptyState title={t("noEmployeeProfile")} description={t("noEmployeeProfileHint")} />
       </div>
     );
   }

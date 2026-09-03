@@ -82,6 +82,8 @@ mọi thao tác ghi dữ liệu.
 | `npm run check` | Typecheck + lint + kiểm tra i18n + unit test |
 | `npm test` | Unit test (tính ngày phép, SLA giờ hành chính) |
 | `npm run smoke` | Gọi thử toàn bộ trang qua HTTP với session thật |
+| `npm run verify` | Kiểm thử đầu-cuối trên trình duyệt: vòng đời tài sản và luồng nghỉ phép |
+| `npm run shot -- /reports` | Chụp màn hình trang (thêm `SHOT_THEME=dark` cho giao diện tối) |
 | `npm run db:start` / `db:stop` / `db:status` | Điều khiển PostgreSQL portable |
 | `npm run db:psql` | Mở psql vào database dev |
 | `npm run db:reset` | Xoá sạch cluster dev |

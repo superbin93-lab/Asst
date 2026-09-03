@@ -45,3 +45,4 @@ next-env.d.ts
 /.devdb
 # prisma generated client
 /src/generated
+/.shots
