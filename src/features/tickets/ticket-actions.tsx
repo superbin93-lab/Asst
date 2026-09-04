@@ -67,7 +67,13 @@ export function TicketActions({
       ) : null}
 
       {!finished ? (
-        <Button size="sm" onClick={() => setResolveOpen(true)}>
+        <Button
+          size="sm"
+          onClick={() => {
+            resolveForm.reset();
+            setResolveOpen(true);
+          }}
+        >
           <CheckCircle2 />
           {t("actions.resolve")}
         </Button>

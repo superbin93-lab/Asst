@@ -77,6 +77,7 @@ export function ConsumablePanel({
           <Button
             size="sm"
             onClick={() => {
+              form.reset();
               setEditing(null);
               setOpen(true);
             }}
@@ -135,13 +136,13 @@ export function ConsumablePanel({
                             </Button>
                           </DropdownTrigger>
                           <DropdownContent>
-                            <DropdownItem onSelect={() => setTimeout(() => setMovement({ row, type: "IN" }), 0)}>
+                            <DropdownItem onSelect={() => setTimeout(() => { stockForm.reset(); setMovement({ row, type: "IN" }); }, 0)}>
                               <ArrowDownToLine />
                               {t("stockIn")}
                             </DropdownItem>
                             <DropdownItem
                               disabled={row.quantity === 0}
-                              onSelect={() => setTimeout(() => setMovement({ row, type: "OUT" }), 0)}
+                              onSelect={() => setTimeout(() => { stockForm.reset(); setMovement({ row, type: "OUT" }); }, 0)}
                             >
                               <ArrowUpFromLine />
                               {t("stockOut")}
@@ -150,6 +151,7 @@ export function ConsumablePanel({
                             <DropdownItem
                               onSelect={() =>
                                 setTimeout(() => {
+                                  form.reset();
                                   setEditing(row);
                                   setOpen(true);
                                 }, 0)

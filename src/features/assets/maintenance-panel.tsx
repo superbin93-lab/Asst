@@ -53,7 +53,7 @@ export function MaintenancePanel({
   const [target, setTarget] = useState<MaintenanceRecord | null>(null);
   const confirm = useConfirmState();
 
-  const { onSubmit, pending, fieldErrors, formError } = useActionForm(
+  const { onSubmit, pending, fieldErrors, formError, reset } = useActionForm(
     (formData: FormData) => saveMaintenance(editing?.id ?? null, formData),
     {
       successMessage: tc("toast.updated"),
@@ -65,6 +65,7 @@ export function MaintenancePanel({
   );
 
   function openForm(record: MaintenanceRecord | null) {
+    reset();
     setEditing(record);
     setOpen(true);
   }

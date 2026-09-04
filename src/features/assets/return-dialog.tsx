@@ -27,14 +27,21 @@ export function ReturnAssetDialog({
   const tc = useTranslations("common");
   const [open, setOpen] = useState(false);
 
-  const { onSubmit, pending, fieldErrors, formError } = useActionForm(returnAsset, {
+  const { onSubmit, pending, fieldErrors, formError, reset } = useActionForm(returnAsset, {
     successMessage: t("assignment.returnSuccess"),
     onSuccess: () => setOpen(false),
   });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
+      <Button
+        variant="secondary"
+        size="sm"
+        onClick={() => {
+          reset();
+          setOpen(true);
+        }}
+      >
         <PackageCheck />
         {t("assignment.returnTitle")}
       </Button>

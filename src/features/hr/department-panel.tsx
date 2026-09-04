@@ -47,7 +47,7 @@ export function DepartmentPanel({
   const [target, setTarget] = useState<DepartmentRow | null>(null);
   const confirm = useConfirmState();
 
-  const { onSubmit, pending, fieldErrors, formError } = useActionForm(
+  const { onSubmit, pending, fieldErrors, formError, reset } = useActionForm(
     (formData: FormData) => saveDepartment(editing?.id ?? null, formData),
     {
       successMessage: tc("toast.updated"),
@@ -62,6 +62,7 @@ export function DepartmentPanel({
     locale === "en" && row.nameEn ? row.nameEn : row.name;
 
   function openForm(row: DepartmentRow | null) {
+    reset();
     setEditing(row);
     setOpen(true);
   }

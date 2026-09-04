@@ -56,11 +56,24 @@ export function LeaveRequestActions({
 
       {canDecide && status === "PENDING" ? (
         <>
-          <Button size="sm" onClick={() => setDecision("APPROVED")}>
+          <Button
+            size="sm"
+            onClick={() => {
+              decideForm.reset();
+              setDecision("APPROVED");
+            }}
+          >
             <Check />
             {tc("actions.approve")}
           </Button>
-          <Button size="sm" variant="danger" onClick={() => setDecision("REJECTED")}>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={() => {
+              decideForm.reset();
+              setDecision("REJECTED");
+            }}
+          >
             <X />
             {tc("actions.reject")}
           </Button>
@@ -68,7 +81,14 @@ export function LeaveRequestActions({
       ) : null}
 
       {canCancel && (status === "PENDING" || status === "APPROVED" || status === "DRAFT") ? (
-        <Button size="sm" variant="secondary" onClick={() => setCancelOpen(true)}>
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => {
+            cancelForm.reset();
+            setCancelOpen(true);
+          }}
+        >
           {tc("actions.cancel")}
         </Button>
       ) : null}

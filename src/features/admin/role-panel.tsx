@@ -37,7 +37,7 @@ export function RolePanel({ rows, canManage }: { rows: RoleRow[]; canManage: boo
   const [selected, setSelected] = useState<string[]>([]);
   const confirm = useConfirmState();
 
-  const { onSubmit, pending, fieldErrors, formError } = useActionForm(
+  const { onSubmit, pending, fieldErrors, formError, reset } = useActionForm(
     (formData: FormData) => saveRole(editing?.id ?? null, formData),
     {
       successMessage: tc("toast.updated"),
@@ -49,6 +49,7 @@ export function RolePanel({ rows, canManage }: { rows: RoleRow[]; canManage: boo
   );
 
   function openForm(row: RoleRow | null) {
+    reset();
     setEditing(row);
     setSelected(row?.permissions ?? []);
     setOpen(true);

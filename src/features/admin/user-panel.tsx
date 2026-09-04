@@ -60,7 +60,7 @@ export function UserPanel({
   const confirm = useConfirmState();
   const { run, pending: running } = useActionRunner();
 
-  const { onSubmit, pending, fieldErrors, formError } = useActionForm(
+  const { onSubmit, pending, fieldErrors, formError, reset } = useActionForm(
     (formData: FormData) => saveUser(editing?.id ?? null, formData),
     {
       successMessage: tc("toast.updated"),
@@ -72,6 +72,7 @@ export function UserPanel({
   );
 
   function openForm(row: UserRow | null) {
+    reset();
     setEditing(row);
     setSelectedRoles(row?.roleIds ?? []);
     setOpen(true);
@@ -204,19 +205,38 @@ export function UserPanel({
 
               <FieldGroup>
                 <Field label={t("fields.name")} htmlFor="u-name" required error={fieldErrors.name}>
-                  <Input id="u-name" name="name" required defaultValue={editing?.name ?? ""} />
+                  <Input
+                    id="u-name"
+                    name="name"
+                    required
+                    placeholder={t("placeholders.name")}
+                    defaultValue={editing?.name ?? ""}
+                  />
                 </Field>
                 <Field label={t("fields.email")} htmlFor="u-email" required error={fieldErrors.email}>
-                  <Input id="u-email" name="email" type="email" required defaultValue={editing?.email ?? ""} />
+                  <Input
+                    id="u-email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder={t("placeholders.email")}
+                    defaultValue={editing?.email ?? ""}
+                  />
                 </Field>
                 <Field
                   label={t("fields.password")}
                   htmlFor="u-password"
                   required={!editing}
-                  hint={editing ? t("resetPasswordHint") : undefined}
+                  hint={editing ? t("resetPasswordHint") : t("passwordRule")}
                   error={fieldErrors.password}
                 >
-                  <Input id="u-password" name="password" type="password" autoComplete="new-password" />
+                  <Input
+                    id="u-password"
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    placeholder={t("placeholders.password")}
+                  />
                 </Field>
                 <Field label={t("fields.employee")} htmlFor="u-employee" error={fieldErrors.employeeId}>
                   <NativeSelect id="u-employee" name="employeeId" defaultValue={editing?.employeeId ?? ""}>

@@ -101,6 +101,7 @@ export function LicensePanel({
   });
 
   function openForm(row: LicenseRow | null) {
+    form.reset();
     setEditing(row);
     setOpen(true);
   }
@@ -176,7 +177,7 @@ export function LicensePanel({
                           </DropdownItem>
                           <DropdownItem
                             disabled={row.seatsUsed >= row.seatsTotal}
-                            onSelect={() => setTimeout(() => setSeatTarget(row), 0)}
+                            onSelect={() => setTimeout(() => { seatForm.reset(); setSeatTarget(row); }, 0)}
                           >
                             <UserPlus />
                             {t("assignSeat")}

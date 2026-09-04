@@ -15,6 +15,12 @@
       "lastLoginAt": "Last sign-in",
       "locale": "Language"
     },
+    "placeholders": {
+      "name": "Nguyen Van A",
+      "email": "a.nguyen@gmail.com",
+      "password": "At least 10 characters"
+    },
+    "passwordRule": "Must include upper case, lower case and a digit.",
     "resetPassword": "Reset password",
     "resetPasswordHint": "The new password is shown only once.",
     "deactivate": "Deactivate",

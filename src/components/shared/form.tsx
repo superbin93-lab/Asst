@@ -45,16 +45,22 @@ export function useActionForm<T>(
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
 
+  /**
+   * Field errors and action error codes both arrive as `validation` keys. A
+   * missing key makes next-intl *return the key path* rather than throw, so the
+   * old try/catch never fired and strings like "validation.minLength" reached
+   * the user. Check first, and fall back to the generic message.
+   */
   const translateError = useCallback(
-    (key: string) => {
-      try {
-        return tv(key as never);
-      } catch {
-        return key;
-      }
-    },
-    [tv],
+    (key: string) => (tv.has(key as never) ? tv(key as never) : t("error")),
+    [t, tv],
   );
+
+  /** Clears stale errors, so reopening a dialog starts on a clean form. */
+  const reset = useCallback(() => {
+    setFieldErrors({});
+    setFormError(null);
+  }, []);
 
   const onSubmit = useCallback(
     (formData: FormData) => {
@@ -90,7 +96,7 @@ export function useActionForm<T>(
     [action, options.successMessage, options.redirectTo, options.refresh, router, t, translateError],
   );
 
-  return { onSubmit, pending, fieldErrors, formError, setFieldErrors };
+  return { onSubmit, pending, fieldErrors, formError, setFieldErrors, reset };
 }
 
 /** Fire-and-forget action runner for row menus and confirm dialogs. */
