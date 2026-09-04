@@ -39,7 +39,7 @@ export function AssignAssetDialog({
   const open = override ?? (searchParams.get("action") === "assign" && !disabled);
   const setOpen = setOverride;
 
-  const { onSubmit, pending, fieldErrors, formError } = useActionForm(assignAsset, {
+  const { onSubmit, pending, fieldErrors, formError, reset } = useActionForm(assignAsset, {
     successMessage: tc("toast.updated"),
     onSuccess: () => {
       setOpen(false);
@@ -49,7 +49,15 @@ export function AssignAssetDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button variant="primary" size="sm" disabled={disabled} onClick={() => setOpen(true)}>
+      <Button
+        variant="primary"
+        size="sm"
+        disabled={disabled}
+        onClick={() => {
+          reset();
+          setOpen(true);
+        }}
+      >
         <UserPlus />
         {t("assignment.assignTitle")}
       </Button>

@@ -64,7 +64,7 @@ export function CrudPanel({
   const [target, setTarget] = useState<CrudRow | null>(null);
   const confirm = useConfirmState();
 
-  const { onSubmit, pending, fieldErrors, formError } = useActionForm(
+  const { onSubmit, pending, fieldErrors, formError, reset } = useActionForm(
     (formData: FormData) => save(editing?.id ?? null, formData),
     {
       successMessage: tc("toast.updated"),
@@ -76,6 +76,7 @@ export function CrudPanel({
   );
 
   function openForm(row: CrudRow | null) {
+    reset();
     setEditing(row);
     setOpen(true);
   }

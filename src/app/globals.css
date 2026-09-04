@@ -8,6 +8,10 @@
    never a raw palette colour.
 --------------------------------------------------------------------------- */
 :root {
+  /* Tells the browser which palette to paint native widgets with:
+     <select> popups, scrollbars, checkboxes, date pickers, autofill. */
+  color-scheme: light;
+
   --background: oklch(0.985 0.002 250);
   --surface: oklch(1 0 0);
   --surface-muted: oklch(0.968 0.004 250);
@@ -48,6 +52,8 @@
 }
 
 .dark {
+  color-scheme: dark;
+
   --background: oklch(0.17 0.012 265);
   --surface: oklch(0.213 0.014 265);
   --surface-muted: oklch(0.253 0.015 265);
@@ -155,6 +161,17 @@
   }
   ::selection {
     background-color: var(--primary-subtle);
+  }
+  /*
+   * The <select> popup is painted by the browser, and it inherits the control's
+   * text colour but not its background. In dark mode that meant near-white
+   * option text on the browser's white popup - unreadable. An explicit pair on
+   * <option> is honoured by Chrome, Edge and Firefox alike.
+   */
+  select option,
+  select optgroup {
+    background-color: var(--surface);
+    color: var(--foreground);
   }
 }
 

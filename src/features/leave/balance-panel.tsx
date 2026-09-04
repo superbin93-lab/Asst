@@ -44,7 +44,7 @@ export function AdjustBalanceButton({
   const tc = useTranslations("common");
   const [open, setOpen] = useState(false);
 
-  const { onSubmit, pending, fieldErrors, formError } = useActionForm(adjustBalance, {
+  const { onSubmit, pending, fieldErrors, formError, reset } = useActionForm(adjustBalance, {
     successMessage: tc("toast.updated"),
     onSuccess: () => setOpen(false),
   });
@@ -55,7 +55,10 @@ export function AdjustBalanceButton({
         variant="ghost"
         size="iconSm"
         aria-label={t("adjustTitle")}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          reset();
+          setOpen(true);
+        }}
       >
         <SlidersHorizontal className="text-muted-foreground" />
       </Button>

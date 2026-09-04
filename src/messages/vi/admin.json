@@ -15,6 +15,12 @@
       "lastLoginAt": "Đăng nhập lần cuối",
       "locale": "Ngôn ngữ"
     },
+    "placeholders": {
+      "name": "Nguyễn Văn A",
+      "email": "a.nguyen@gmail.com",
+      "password": "Tối thiểu 10 ký tự"
+    },
+    "passwordRule": "Cần có cả chữ hoa, chữ thường và chữ số.",
     "resetPassword": "Đặt lại mật khẩu",
     "resetPasswordHint": "Mật khẩu mới sẽ được hiển thị một lần duy nhất.",
     "deactivate": "Vô hiệu hoá",
