@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/session";
 import { isAppLocale, LOCALE_COOKIE, type AppLocale } from "@/i18n/config";
 import { isThemeSetting, THEME_COOKIE, type ThemeSetting } from "@/lib/theme";
+import { isSidebarMode, SIDEBAR_COOKIE, type SidebarMode } from "@/lib/sidebar";
 
 const ONE_YEAR = 60 * 60 * 24 * 365;
 
@@ -26,4 +27,10 @@ export async function setTheme(theme: ThemeSetting) {
   if (!isThemeSetting(theme)) return;
   const store = await cookies();
   store.set(THEME_COOKIE, theme, { path: "/", maxAge: ONE_YEAR, sameSite: "lax" });
+}
+
+export async function setSidebar(mode: SidebarMode) {
+  if (!isSidebarMode(mode)) return;
+  const store = await cookies();
+  store.set(SIDEBAR_COOKIE, mode, { path: "/", maxAge: ONE_YEAR, sameSite: "lax" });
 }

@@ -137,6 +137,17 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
+  /*
+   * Tailwind v4's preflight leaves controls on `cursor: default`, so every
+   * button in the app looked inert on hover while links did not. Restored here
+   * once instead of a `cursor-pointer` on each variant and each raw <button>.
+   */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  select:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
   /* Keyboard focus stays visible; pointer focus does not draw a ring. */
   :focus-visible {
     outline: 2px solid var(--ring);

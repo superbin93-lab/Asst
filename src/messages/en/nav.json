@@ -34,5 +34,10 @@
   "settings": "Settings",
   "auditLog": "Audit log",
   "profile": "My profile",
-  "signOut": "Sign out"
+  "signOut": "Sign out",
+  "menu": "Open navigation menu",
+  "closeMenu": "Close navigation menu",
+  "account": "My account",
+  "expandSidebar": "Expand menu",
+  "collapseSidebar": "Collapse menu"
 }

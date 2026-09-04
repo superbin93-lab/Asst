@@ -34,5 +34,10 @@
   "settings": "Cấu hình",
   "auditLog": "Nhật ký hệ thống",
   "profile": "Hồ sơ cá nhân",
-  "signOut": "Đăng xuất"
+  "signOut": "Đăng xuất",
+  "menu": "Mở menu điều hướng",
+  "closeMenu": "Đóng menu điều hướng",
+  "account": "Tài khoản của tôi",
+  "expandSidebar": "Mở rộng menu",
+  "collapseSidebar": "Thu gọn menu"
 }

@@ -24,7 +24,9 @@ export function ThemeToggle({ initial = "system" }: { initial?: ThemeSetting }) 
     setCurrent(next);
     const dark = next === "dark" || (next === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
     document.documentElement.classList.toggle("dark", dark);
-    startTransition(() => void setTheme(next));
+    startTransition(async () => {
+      await setTheme(next);
+    });
   }
 
   const Icon = ICONS[current];

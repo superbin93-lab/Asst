@@ -4,12 +4,17 @@ import { canAny } from "@/lib/auth/permissions";
 import { NAV_SECTIONS } from "@/lib/navigation";
 import { db } from "@/lib/db";
 import { getStoredTheme } from "@/lib/theme-server";
+import { getStoredSidebar } from "@/lib/sidebar-server";
 import { AppShell } from "@/components/layout/app-shell";
 import type { VisibleNavSection } from "@/components/layout/sidebar";
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
   const user = await requireUser();
-  const [t, theme] = await Promise.all([getTranslations("app"), getStoredTheme()]);
+  const [t, theme, sidebar] = await Promise.all([
+    getTranslations("app"),
+    getStoredTheme(),
+    getStoredSidebar(),
+  ]);
 
   // Only sections and items the user can actually reach are sent to the client.
   const sections: VisibleNavSection[] = NAV_SECTIONS.flatMap((section) => {
@@ -33,6 +38,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
       sections={sections}
       appName={t("shortName")}
       theme={theme}
+      sidebar={sidebar}
       user={{
         name: user.name,
         email: user.email,

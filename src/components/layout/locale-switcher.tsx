@@ -15,15 +15,22 @@ export function LocaleSwitcher({ withLabel = false }: { withLabel?: boolean }) {
 
   return (
     <Dropdown>
+      {/* The trigger is never disabled while saving: a disabled Radix trigger
+          swallows the click that reopens the menu and reads as broken. */}
       <DropdownTrigger asChild>
-        <Button variant="ghost" size={withLabel ? "sm" : "icon"} aria-label={t("switch")} disabled={pending}>
+        <Button variant="ghost" size={withLabel ? "sm" : "icon"} aria-label={t("switch")} aria-busy={pending}>
           <Languages />
           {withLabel ? LOCALE_LABELS[active] : null}
         </Button>
       </DropdownTrigger>
       <DropdownContent>
         {LOCALES.map((locale) => (
-          <DropdownItem key={locale} onSelect={() => startTransition(() => void setLocale(locale))}>
+          <DropdownItem
+            key={locale}
+            onSelect={() => startTransition(async () => {
+              await setLocale(locale);
+            })}
+          >
             {LOCALE_LABELS[locale]}
             {active === locale ? <span className="ml-auto text-xs text-primary">&#10003;</span> : null}
           </DropdownItem>
