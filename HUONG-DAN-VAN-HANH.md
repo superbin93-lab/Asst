@@ -119,8 +119,18 @@ dòng cuối cùng:
 
 File sao lưu được cất ở `~/asst-backups/`, tự động giữ lại 14 bản gần nhất.
 
-> Lần đầu tiên chạy, nếu báo `Permission denied` thì gõ một lần duy nhất:
-> `chmod +x deploy.sh` rồi chạy lại `./deploy.sh`.
+> Nếu báo `Permission denied`, **đừng gõ `chmod +x`**. Lệnh đó tự nó là một
+> thay đổi mà Git ghi nhận, và bước 0 của `deploy.sh` sẽ chặn lại vì tưởng
+> bạn sửa file trên máy chủ. Thay vào đó gõ hai dòng này:
+>
+> ```bash
+> git checkout -- deploy.sh
+> ```
+> ```bash
+> git pull --ff-only
+> ```
+>
+> Bản `deploy.sh` trong kho đã sẵn quyền chạy, nên tải lại là xong.
 
 ### B6. Kiểm tra lại
 
