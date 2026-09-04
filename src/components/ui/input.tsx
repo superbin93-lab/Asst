@@ -15,10 +15,17 @@ export function Textarea({ className, ...props }: React.ComponentProps<"textarea
 export function NativeSelect({ className, ...props }: React.ComponentProps<"select">) {
   return (
     <select
-      className={cn(fieldBase, "h-9 appearance-none bg-[length:1rem] bg-[right_0.6rem_center] bg-no-repeat pr-8", className)}
+      className={cn(fieldBase, "h-9 appearance-none pr-8", className)}
+      // The chevron's placement stays in `style`, not in `bg-[...]` classes:
+      // tailwind-merge reads an arbitrary `bg-[right_0.6rem_center]` as a
+      // background *colour* and drops the `bg-input` in fieldBase, which left
+      // the control transparent.
       style={{
         backgroundImage:
           "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "right 0.6rem center",
+        backgroundSize: "1rem",
       }}
       {...props}
     />
