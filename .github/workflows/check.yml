@@ -1,0 +1,46 @@
+name: check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# A newer push to the same branch makes an in-flight run pointless.
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: typecheck · lint · i18n · test
+    runs-on: ubuntu-latest
+    env:
+      # No database is contacted: tsc and eslint never execute the code, and the
+      # unit tests (workdays, sla) are pure. These only satisfy the Zod check in
+      # src/lib/env.ts should anything import it at module load.
+      DATABASE_URL: postgresql://itam:itam@localhost:5432/itam?schema=public
+      AUTH_SECRET: ci-placeholder-secret-000000000000000000000000
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      # postinstall runs `prisma generate`, which writes src/generated (gitignored).
+      - run: npm ci
+
+      - run: npm run check
+
+  docker:
+    name: docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # The VPS deploys by building this same Dockerfile, so a break must surface
+      # here rather than halfway through a deploy. Build only - nothing is pushed.
+      - name: Build production image
+        run: docker build --target runner -t itam-suite:ci .

@@ -32,8 +32,28 @@ services:
       SEED_DEMO: ${SEED_DEMO:-false}
       SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@company.local}
       SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:?set SEED_ADMIN_PASSWORD in .env}
+    # Behind Cloudflare Tunnel set APP_BIND=127.0.0.1 so the app is reachable
+    # only through the tunnel and nothing is exposed on the public interface.
     ports:
-      - "${APP_PORT:-3000}:3000"
+      - "${APP_BIND:-0.0.0.0}:${APP_PORT:-3000}:3000"
+
+  # Optional: publishes the app through a Cloudflare Tunnel, so the VPS needs no
+  # inbound port open and Cloudflare terminates TLS. Create the tunnel in the
+  # Cloudflare dashboard (Zero Trust > Networks > Tunnels), point its public
+  # hostname at http://app:3000, put the token in .env, then:
+  #
+  #   docker compose --profile tunnel up -d
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    profiles: ["tunnel"]
+    command: tunnel --no-autoupdate run
+    environment:
+      # Not `:?` - compose interpolates every service even when its profile is
+      # inactive, so a required marker here would break the plain `up -d` path.
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:-}
+    depends_on:
+      - app
 
 volumes:
   pgdata:

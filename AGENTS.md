@@ -18,8 +18,11 @@ Việt - Anh, phân quyền theo permission.
 
 | Lệnh | Việc |
 |---|---|
-| `npm run db:start` / `db:stop` / `db:status` | PostgreSQL 17 portable trong `.devdb`, cổng 55432, không cần cài đặt hệ thống hay quyền admin |
+| `npm run docker:db` | PostgreSQL 17 trong Docker, cổng 55432 - **cách dựng DB dev mặc định** |
+| `npm run db:start` / `db:stop` / `db:status` | PostgreSQL 17 portable trong `.devdb`, cũng cổng 55432, dùng khi không có Docker |
 | `npm run dev` | Dev server (Turbopack) |
+| `npm run docker:dev` | Dựng **cả app lẫn DB** trong Docker. Chạy được nhưng mỗi lần sửa code phải chờ ~74 giây (bind-mount Windows); xem README trước khi dùng |
+| `npm run docker:prod` | Chạy đúng bản production trên máy, giống hệt VPS |
 | `npm run check` | **Cổng chính**: typecheck + lint + i18n + unit test |
 | `npm test` | Unit test |
 | `node --test --import tsx tests/workdays.test.ts` | Chạy **một** file test |
@@ -30,6 +33,31 @@ Việt - Anh, phân quyền theo permission.
 
 `smoke` / `verify` / `shot` cần dev server **và** database đang chạy. Chúng đăng
 nhập bằng cách ghi thẳng `Session` vào DB rồi set cookie, không gõ form đăng nhập.
+
+## Docker
+
+Ba file, ba mục đích khác nhau - đừng lẫn:
+
+| File | Dùng cho | Ghi chú |
+|---|---|---|
+| `docker-compose.yml` | Production trên VPS | Yêu cầu `.env` (`cp .env.docker.example .env`). Có service `cloudflared` sau profile `tunnel` |
+| `docker-compose.dev.yml` | Dev trên máy cá nhân | Mọi biến đều có mặc định, chạy được không cần `.env`. Project name riêng `itam-dev` nên không đụng stack production |
+| `Dockerfile` | Cả hai | Stage `dev` (chỉ dependencies, source đến từ bind mount) và stage `runner` (bản production) |
+
+Điểm dễ vấp:
+
+- Compose **nội suy biến của mọi service kể cả service ngoài profile đang bật**,
+  nên biến của `cloudflared` phải dùng `${VAR:-}` chứ không được `${VAR:?}`, nếu
+  không lệnh `docker compose up -d` thông thường sẽ hỏng.
+- `process.env` thắng file `.env` (thứ tự nạp của Next), nên `.env` bị bind-mount
+  vào container dev không đè được `DATABASE_URL` mà compose truyền vào.
+- Container dev không dùng Turbopack mà dùng `next dev --webpack` (`npm run dev:poll`).
+  Turbopack dựa vào inotify, bind-mount Windows không gửi sự kiện, nên nó **âm thầm
+  phục vụ code cũ** - đã kiểm chứng. Webpack có polling nên vẫn nhận thay đổi.
+- Entrypoint dev nằm ở `/usr/local/bin/dev-entrypoint.sh`, **ngoài `/app`**, vì
+  bind mount thay thế toàn bộ `/app` lúc chạy.
+- `node_modules` và `.next` của container nằm trong volume riêng: chúng chứa binary
+  biên dịch cho Linux, không dùng chung với bản Windows được.
 
 ## Kiến trúc
 
@@ -70,6 +98,27 @@ không tự `new PrismaClient()`.
 (`import "server-only"`) · `actions.ts` (server action) · `*.tsx` (component
 riêng). Component dùng chung ở `src/components/{ui,shared,charts,layout}`.
 
+## Bản đồ module
+
+Mỗi module có `AGENTS.md` riêng trong thư mục của nó, ghi trang, quyền, bảng dữ
+liệu, bất biến nghiệp vụ và checklist khi phát triển thêm. **Đọc file của module
+trước khi sửa module đó**; file này chỉ giữ những gì dùng chung.
+
+| Module | Phạm vi | Tài liệu |
+|---|---|---|
+| `assets` | Tài sản IT: nhập kho, cấp phát, thu hồi, bảo trì, thanh lý | [src/features/assets/AGENTS.md](src/features/assets/AGENTS.md) |
+| `leave` | Đơn nghỉ phép, chuỗi duyệt, quỹ phép, ngày lễ | [src/features/leave/AGENTS.md](src/features/leave/AGENTS.md) |
+| `tickets` | Helpdesk, SLA giờ hành chính, hội thoại | [src/features/tickets/AGENTS.md](src/features/tickets/AGENTS.md) |
+| `hr` | Hồ sơ nhân viên, bộ phận, chức danh, hợp đồng | [src/features/hr/AGENTS.md](src/features/hr/AGENTS.md) |
+| `inventory` | License phần mềm + vật tư tiêu hao | [src/features/inventory/AGENTS.md](src/features/inventory/AGENTS.md) |
+| `catalog` | Bảy màn hình danh mục nền | [src/features/catalog/AGENTS.md](src/features/catalog/AGENTS.md) |
+| `admin` | Người dùng, vai trò, cấu hình, nhật ký | [src/features/admin/AGENTS.md](src/features/admin/AGENTS.md) |
+| `dashboard` | Trang chủ + `/reports` (đọc thuần) | [src/features/dashboard/AGENTS.md](src/features/dashboard/AGENTS.md) |
+
+Hai module đi lệch khuôn chung: `inventory` không có `queries.ts` lẫn `schema.ts`
+(truy vấn nằm trong `page.tsx`, Zod ở `catalog/schema.ts`), còn `admin` khai báo
+Zod ngay trong `actions.ts`. Lý do ghi trong tài liệu của từng module.
+
 ## Quy ước bắt buộc
 - **Mọi thao tác ghi đi qua server action** trong `src/features/<module>/actions.ts`.
   Mỗi action: `authorize(PERMISSIONS.X)` -> validate bằng Zod -> ghi DB -> `recordAudit()` -> `revalidatePath()` -> trả `ActionResult`.
@@ -90,10 +139,16 @@ riêng). Component dùng chung ở `src/components/{ui,shared,charts,layout}`.
 - `CrudPanel` nhận descriptor có `render`, nên mỗi entity cần một wrapper **client** riêng.
 
 ## Nghiệp vụ dễ sai
+
+Chi tiết nằm trong `AGENTS.md` của module tương ứng; đây là danh sách để biết chỗ mà tìm.
+
 - Số ngày nghỉ phép: `src/features/leave/workdays.ts` (loại trừ cuối tuần theo cấu hình + ngày lễ, hỗ trợ nửa ngày). Có unit test.
 - SLA giờ hành chính: `src/features/tickets/sla.ts` (08:00-12:00, 13:00-17:30, bỏ đêm/cuối tuần/ngày lễ). Có unit test.
 - Quỹ phép chuyển giữa ba ô: `pendingDays` khi gửi đơn, sang `usedDays` khi duyệt xong, trả lại khi từ chối/huỷ. Số cấp duyệt lấy từ `approvalLevels` trong settings.
 - Cấp phát tài sản đóng assignment ACTIVE cũ, đặt `holderId`, và **thừa kế `departmentId` từ nhân viên** - tất cả trong cùng một transaction.
+- Luật hiển thị ticket (không có `ticket.view.all` thì chỉ thấy ticket của mình) lặp ở **ba** chỗ: `tickets/queries.ts`, `tickets/actions.ts`, `dashboard/queries.ts`.
+- Công thức chia tỷ lệ quỹ phép cho người vào làm giữa năm nằm ở **hai** chỗ: `hr/actions.ts` (lúc tạo nhân viên) và `leave/balance-actions.ts` (lúc phát quỹ cả năm).
+- So sánh hai cột trong Prisma là không được: tồn kho thấp (`quantity <= minQuantity`) phải dùng `$queryRaw`.
 
 ## Biểu đồ
 - Bảng màu ở `src/app/globals.css` (`--viz-1..5`), một tông xanh theo thang thứ tự, đã kiểm định riêng cho light và dark.

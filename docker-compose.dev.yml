@@ -1,0 +1,76 @@
+# Development stack. Everything runs in Docker; the working tree is mounted into
+# the app container so edits on the host take effect without a rebuild.
+#
+#   docker compose -f docker-compose.dev.yml up -d --build     (or: npm run docker:dev)
+#
+# Every value below has a working default, so this starts with no .env at all.
+# A project name of its own keeps these containers and volumes separate from the
+# production stack in docker-compose.yml.
+name: itam-dev
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: itam
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-itam}
+      POSTGRES_DB: itam
+    # Published on 55432 - the same port the portable .devdb uses - so the
+    # existing DATABASE_URL in .env keeps working for host-side tooling
+    # (`npm run db:studio`, `npm run smoke`, DBeaver, ...).
+    ports:
+      - "${DEV_DB_PORT:-55432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U itam -d itam"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build:
+      context: .
+      target: dev
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      # `db` is the compose service name; process.env wins over the mounted .env
+      # file (Next resolves process.env first), so a host DATABASE_URL pointing
+      # at localhost cannot leak in here.
+      DATABASE_URL: postgresql://itam:${POSTGRES_PASSWORD:-itam}@db:5432/itam?schema=public
+      AUTH_SECRET: ${AUTH_SECRET:-dev-only-secret-not-for-production-0000000000}
+      SESSION_MAX_AGE_DAYS: ${SESSION_MAX_AGE_DAYS:-7}
+      APP_URL: http://localhost:${APP_PORT:-3000}
+      DEFAULT_LOCALE: ${DEFAULT_LOCALE:-vi}
+      SEED_ON_START: ${SEED_ON_START:-true}
+      # Dev wants the bilingual demo employees/assets/tickets; production does not.
+      SEED_DEMO: ${SEED_DEMO:-true}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@company.local}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-Admin@12345}
+    volumes:
+      # The working tree. Edits on Windows are visible to the dev server.
+      - .:/app
+      # Shadow the host's node_modules: it holds Windows-native binaries
+      # (@swc/core, esbuild, prisma engines) that cannot run on Linux. Docker
+      # seeds this volume from the image the first time it is created.
+      - node_modules:/app/node_modules
+      # Same reasoning for the build cache: keep the container's .next apart from
+      # the one a native `npm run dev` writes, so the two never corrupt each other.
+      - next_cache:/app/.next
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    # Not `npm run dev`: Turbopack has no polling switch and relies on inotify
+    # events, which a Windows/macOS bind mount never delivers - the dev server
+    # silently serves stale code (verified on this repo). `dev:poll` runs the
+    # webpack dev server, which honours WATCHPACK_POLLING set in the dev image.
+    command: ["npm", "run", "dev:poll"]
+
+volumes:
+  pgdata:
+  node_modules:
+  next_cache:

@@ -11,16 +11,36 @@ nghiệp vừa và nhỏ. Giao diện song ngữ Việt – Anh, phân quyền t
 
 ---
 
-## Bắt đầu nhanh
+## Môi trường phát triển
+
+Có ba cách dựng môi trường dev. Con số dưới đây đo trên máy Windows 11 + Docker
+Desktop, repo nằm ở ổ `D:` — **thời gian biên dịch lại sau khi sửa một dòng code**:
+
+| Cách | Lệnh | Sửa code → thấy kết quả |
+|---|---|---|
+| **Lai** (khuyến nghị): DB trong Docker, app chạy native | `npm run docker:db` + `npm run dev` | **~0,15 giây** |
+| Tất cả trong Docker | `npm run docker:dev` | **~74 giây** |
+| Không Docker: PostgreSQL portable | `npm run db:start` + `npm run dev` | ~0,15 giây |
+
+Chênh lệch không phải do cấu hình chưa tối ưu mà là giới hạn của bind-mount
+Docker trên Windows/macOS — chính tài liệu Next.js cũng khuyến cáo điều này
+(`node_modules/next/dist/docs/01-app/02-guides/local-development.md`, mục 8).
+Xem [Chạy toàn bộ trong Docker](#chạy-toàn-bộ-trong-docker) nếu bạn vẫn muốn cách đó.
+
+### Cách khuyến nghị
 
 ```bash
 npm install
 cp .env.example .env          # rồi điền AUTH_SECRET (xem bên dưới)
-npm run db:start              # PostgreSQL portable trong .devdb, không cần cài đặt
+npm run docker:db             # PostgreSQL 17 trong Docker, cổng 55432
 npm run db:migrate            # tạo bảng
 npm run db:seed               # dữ liệu danh mục + dữ liệu mẫu
 npm run dev
 ```
+
+`docker:db` mở cổng **55432** đúng bằng cổng của PostgreSQL portable, nên
+`DATABASE_URL` trong `.env.example` dùng được cho cả hai — không phải sửa gì khi
+đổi qua lại. Dữ liệu nằm trong volume `itam-dev_pgdata`, tắt máy không mất.
 
 Mở http://localhost:3000 và đăng nhập:
 
@@ -40,6 +60,37 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 Chạy `SEED_DEMO=false npm run db:seed` nếu chỉ muốn dữ liệu danh mục, không muốn
 dữ liệu mẫu.
+
+### Chạy toàn bộ trong Docker
+
+Một lệnh dựng cả PostgreSQL lẫn app, không cần cài Node trên máy. Migration và
+seed chạy tự động lúc khởi động, không cần `.env`:
+
+```bash
+npm run docker:dev            # dựng và chạy nền
+npm run docker:dev:logs       # xem log
+npm run docker:dev:stop       # dừng (giữ dữ liệu)
+```
+
+| Lệnh | Việc |
+|---|---|
+| `npm run docker:dev:sh` | Mở shell trong container (chạy `npx prisma migrate dev` khi đổi schema) |
+| `npm run docker:dev:deps` | Cài lại `node_modules` sau khi `package.json` đổi |
+| `npm run docker:dev:reset` | Xoá sạch cả dữ liệu database, dựng lại từ đầu |
+
+Ba điểm cần biết trước khi dùng cách này:
+
+- **Mỗi lần sửa code phải chờ khoảng 74 giây**, lần biên dịch đầu khoảng 2,5 phút.
+- Container chạy `next dev --webpack` chứ không phải Turbopack. Turbopack dựa vào
+  sự kiện inotify mà bind-mount Windows không gửi, nên nó **âm thầm phục vụ code
+  cũ** — đã kiểm chứng trên chính repo này. Webpack có chế độ polling nên vẫn nhận
+  thay đổi. Đổi lại, bundler lúc dev khác lúc build production.
+- `node_modules` và `.next` của container nằm trong volume riêng, tách khỏi bản
+  trên Windows, vì chúng chứa binary biên dịch cho Linux. Sau khi thêm package
+  phải chạy `npm run docker:dev:deps`.
+
+Sau khi `npm run docker:dev` xong, DB vẫn mở ở cổng 55432 nên `npm run db:studio`
+hay DBeaver trên Windows kết nối được như thường.
 
 ---
 
@@ -86,6 +137,41 @@ Nếu VPS bật `ufw`, mở cổng cho `APP_PORT` (mặc định `3000`):
 sudo ufw allow 3000/tcp
 ```
 
+### Đưa ra Internet qua Cloudflare
+
+Có hai cách, nên chọn cách đầu.
+
+**Cloudflare Tunnel (khuyến nghị)** — VPS không cần mở cổng nào ra Internet,
+Cloudflare lo HTTPS, không phải gia hạn chứng chỉ:
+
+1. Trong Cloudflare Zero Trust → Networks → Tunnels, tạo tunnel mới, thêm public
+   hostname trỏ tới `http://app:3000` (tên service trong compose).
+2. Chép token vào `.env`: `TUNNEL_TOKEN=...`
+3. Đặt `APP_BIND=127.0.0.1` trong `.env` để app không lộ ra ngoài, rồi:
+
+```bash
+docker compose --profile tunnel up -d
+```
+
+**Hoặc Cloudflare DNS proxy (đám mây cam)** trỏ thẳng vào IP VPS. Cách này cần
+mở cổng 80/443 và tự lo chứng chỉ ở origin; chế độ SSL "Flexible" tuy chạy được
+nhưng chặng Cloudflare → VPS không mã hoá. Vì vậy Tunnel gọn và an toàn hơn.
+
+Với cả hai cách, nhớ đặt `APP_URL=https://ten-mien-cua-ban` trong `.env`. Cookie
+session dùng cờ `secure` khi `NODE_ENV=production`, nên **bắt buộc phải vào bằng
+HTTPS** thì mới đăng nhập được — vào bằng `http://<IP>:3000` khi đã có Cloudflare
+sẽ đăng nhập không thành công.
+
+### Kiểm tra tự động trước khi deploy
+
+`.github/workflows/check.yml` chạy mỗi lần push và pull request:
+
+- `npm run check` — typecheck + lint + i18n + unit test (không cần database).
+- `docker build` bản production — để Dockerfile hỏng thì lộ ra ở GitHub chứ không
+  phải lúc đang deploy dở trên VPS.
+
+Nên chờ dấu tích xanh trên GitHub rồi mới `git pull` trên VPS.
+
 Sự cố thường gặp:
 
 | Triệu chứng | Nguyên nhân / cách xử lý |
@@ -94,6 +180,8 @@ Sự cố thường gặp:
 | Container `app` cứ restart liên tục | `docker compose logs app` xem lỗi migration/kết nối DB; thường do `db` chưa healthy kịp hoặc `.env` sai |
 | Vào được `http://<IP>:3000` từ VPS nhưng không vào được từ máy khác | Firewall VPS (`ufw`) hoặc security group của nhà cung cấp cloud chưa mở cổng `3000` |
 | Muốn đổi cổng ứng dụng | Sửa `APP_PORT` trong `.env` rồi `docker compose up -d` lại |
+| Đăng nhập báo sai mật khẩu dù mật khẩu đúng | Đang vào bằng `http://`. Cookie session có cờ `secure` ở chế độ production nên chỉ hoạt động qua HTTPS |
+| Build trên VPS bị treo hoặc báo hết bộ nhớ | `next build` cần khoảng 1,5–2 GB RAM. Tạm bật swap: `sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile` |
 
 ### Không dùng Docker (cài trực tiếp lên VPS)
 
@@ -185,6 +273,12 @@ mọi thao tác ghi dữ liệu.
 | `npm run db:reset` | Xoá sạch cluster dev |
 | `npm run db:studio` | Prisma Studio |
 | `npm run i18n:check` | Báo lỗi nếu hai ngôn ngữ lệch key |
+| `npm run docker:db` | Chỉ dựng PostgreSQL trong Docker (cổng 55432) |
+| `npm run docker:dev` | Dựng cả app lẫn DB trong Docker |
+| `npm run docker:dev:logs` / `:stop` / `:sh` | Log, dừng, mở shell trong container dev |
+| `npm run docker:dev:deps` | Cài lại node_modules của container sau khi đổi `package.json` |
+| `npm run docker:dev:reset` | Xoá container dev **và toàn bộ dữ liệu** |
+| `npm run docker:prod` | Chạy thử đúng bản production trên máy (giống hệt VPS) |
 
 ---
 
