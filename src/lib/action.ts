@@ -45,7 +45,3 @@ export function formValue(formData: FormData, key: string): string {
   const value = formData.get(key);
   return typeof value === "string" ? value : "";
 }
-
-export function formEntries(formData: FormData, keys: string[]): Record<string, string> {
-  return Object.fromEntries(keys.map((k) => [k, formValue(formData, k)]));
-}

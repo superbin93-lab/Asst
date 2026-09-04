@@ -10,18 +10,6 @@ export function param(sp: SearchParamsInput, key: string): string | undefined {
   return trimmed ? trimmed : undefined;
 }
 
-export function paramList(sp: SearchParamsInput, key: string): string[] {
-  const value = sp[key];
-  if (!value) return [];
-  return (Array.isArray(value) ? value : value.split(","))
-    .map((v) => v.trim())
-    .filter(Boolean);
-}
-
-export function boolParam(sp: SearchParamsInput, key: string): boolean {
-  return param(sp, key) === "1";
-}
-
 export function intParam(sp: SearchParamsInput, key: string, fallback: number): number {
   const raw = param(sp, key);
   const n = raw ? Number.parseInt(raw, 10) : Number.NaN;
@@ -58,19 +46,3 @@ export function contains(value: string) {
   return { contains: value, mode: "insensitive" as const };
 }
 
-export function buildQueryString(current: SearchParamsInput, patch: Record<string, string | undefined>) {
-  const params = new URLSearchParams();
-  for (const [key, value] of Object.entries(current)) {
-    if (value === undefined) continue;
-    const v = Array.isArray(value) ? value.join(",") : value;
-    if (v) params.set(key, v);
-  }
-  for (const [key, value] of Object.entries(patch)) {
-    if (value === undefined || value === "") params.delete(key);
-    else params.set(key, value);
-  }
-  // Any change to filters resets to the first page.
-  if (!("page" in patch)) params.delete("page");
-  const qs = params.toString();
-  return qs ? `?${qs}` : "";
-}

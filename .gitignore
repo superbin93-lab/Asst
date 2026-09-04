@@ -47,3 +47,6 @@ next-env.d.ts
 # prisma generated client
 /src/generated
 /.shots
+
+# Claude Code local machine settings
+.claude/settings.local.json

@@ -99,8 +99,3 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
     permissions,
   };
 });
-
-/** Housekeeping: drop rows for sessions that have already lapsed. */
-export function purgeExpiredSessions() {
-  return db.session.deleteMany({ where: { expiresAt: { lt: new Date() } } });
-}

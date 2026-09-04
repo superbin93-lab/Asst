@@ -177,21 +177,6 @@ export async function getLeaveFormOptions(user: SessionUser) {
   return { types, employees, departments, canPickEmployee };
 }
 
-export async function countPendingApprovals(user: SessionUser) {
-  if (!can(user, PERMISSIONS.LEAVE_APPROVE)) return 0;
-  return db.leaveRequest.count({
-    where: {
-      status: "PENDING",
-      approvals: {
-        some: {
-          status: "PENDING",
-          ...(can(user, PERMISSIONS.LEAVE_MANAGE) ? {} : { approverId: user.id }),
-        },
-      },
-    },
-  });
-}
-
 export async function getHolidays(year?: number) {
   if (!year) return db.holiday.findMany({ orderBy: { date: "asc" } });
   return db.holiday.findMany({

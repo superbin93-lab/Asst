@@ -1,7 +1,7 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import { getCurrentUser, type SessionUser } from "./session";
-import { can, canAny, type Permission } from "./permissions";
+import { can, type Permission } from "./permissions";
 
 /** Thrown by server actions when the caller lacks a required permission. */
 export class ForbiddenError extends Error {
@@ -22,12 +22,6 @@ export async function requireUser(): Promise<SessionUser> {
 export async function requirePermission(permission: Permission): Promise<SessionUser> {
   const user = await requireUser();
   if (!can(user, permission)) redirect("/forbidden");
-  return user;
-}
-
-export async function requireAnyPermission(permissions: Permission[]): Promise<SessionUser> {
-  const user = await requireUser();
-  if (!canAny(user, permissions)) redirect("/forbidden");
   return user;
 }
 
