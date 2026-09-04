@@ -26,7 +26,7 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "i18n:check": "node scripts/check-i18n.mjs",
     "smoke": "tsx scripts/smoke.ts",
     "test": "node --test --import tsx tests/**/*.test.ts",
